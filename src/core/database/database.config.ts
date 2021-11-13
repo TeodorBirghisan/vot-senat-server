@@ -28,4 +28,3 @@ export const databaseConfig: IDatabaseConfig = {
     dialect: process.env.DB_DIALECT,
   },
 };
-
