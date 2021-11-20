@@ -45,6 +45,19 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Running migrations
+
+```bash
+# Run migrations
+$ npx sequelize-cli db:migrate
+
+# Undo migrations
+$ npx sequelize-cli db:migrate:undo
+
+# Undo all migrations
+$ npx sequelize-cli db:migrate:undo:all
+```
+
 ## Test
 
 ```bash
@@ -58,15 +71,17 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Format
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+$ npm run format
+```
 
-## Stay in touch
+## Linter
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+$ npm run lint
+```
 
 ## License
 
