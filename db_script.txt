@@ -1,0 +1,6 @@
+#Use those commands to set up postgresql
+createdb test_database_name;
+createdb vot_senat;
+psql postgres
+CREATE ROLE vot_senat_admin WITH LOGIN PASSWORD 'admin1234';
+GRANT ALL PRIVILEGES ON DATABASE test_database_name TO vot_senat_admin;

@@ -3,7 +3,7 @@ import { IDatabaseConfig } from './interfaces/dbConfig.interface';
 
 dotenv.config();
 
-export const databaseConfig: IDatabaseConfig = {
+export const DATABASE_CONFIG: IDatabaseConfig = {
   development: {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
