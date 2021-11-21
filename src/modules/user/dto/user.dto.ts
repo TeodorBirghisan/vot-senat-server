@@ -11,11 +11,11 @@ export class UserDto {
     name?: string,
     role?: string,
     phoneNumber?: string,
-  ){
+  ) {
     this.email = email;
     this.password = password;
-    this.name = name ?? "";
-    this.role = role ?? "";
-    this.phoneNumber = phoneNumber ?? "";
+    this.name = name ?? '';
+    this.role = role ?? '';
+    this.phoneNumber = phoneNumber ?? '';
   }
 }

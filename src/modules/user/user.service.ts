@@ -5,7 +5,8 @@ import { User } from './user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(RepositoryKeys.USER_REPOSITORY) private readonly userRepository: typeof User,
+    @Inject(RepositoryKeys.USER_REPOSITORY)
+    private readonly userRepository: typeof User,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -14,9 +15,9 @@ export class UserService {
 
   async findOneByEmail(email: string): Promise<User> {
     return this.userRepository.findOne<User>({
-      where:{
-        email
-      }
+      where: {
+        email,
+      },
     });
   }
 
@@ -25,12 +26,15 @@ export class UserService {
     const user: User = await this.findOneByEmail(email);
 
     if (user) {
-      throw new HttpException("User with this email already exists", HttpStatus.CONFLICT);
+      throw new HttpException(
+        'User with this email already exists',
+        HttpStatus.CONFLICT,
+      );
     }
 
     return await this.userRepository.create<User>({
       email,
-      password
+      password,
     });
   }
 }

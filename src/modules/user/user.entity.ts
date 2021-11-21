@@ -1,21 +1,31 @@
-import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
 
 interface IUserAttributes {
   id: number;
-  name: string,
-  email: string,
-  password: string,
-  role: string,
-  phoneNumber: string,
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  phoneNumber: string;
 }
 
-interface IUserCreationAttributes{
-  email: string,
-  password: string,
+interface IUserCreationAttributes {
+  email: string;
+  password: string;
 }
 
 @Table
-export class User extends Model<IUserAttributes, IUserCreationAttributes> implements IUserAttributes {
+export class User
+  extends Model<IUserAttributes, IUserCreationAttributes>
+  implements IUserAttributes
+{
   // timestamps!
   readonly createdAt!: Date;
   readonly updatedAt!: Date;
