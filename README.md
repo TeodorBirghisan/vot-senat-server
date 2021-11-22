@@ -45,6 +45,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Running with Docker
+
+```bash
+
+docker-compose up
+
+```
+
 ## Running migrations
 
 ```bash

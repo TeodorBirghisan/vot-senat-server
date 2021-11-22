@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  main:
+    container_name: server
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 8080:3000
+    command: npm run start:dev
+    env_file:
+      - .env
+    environment:
+      DB_HOST: 'postgres'
+    networks:
+      - webnet
+    depends_on:
+      - postgres
+  postgres:
+    container_name: postgres
+    image: postgres:14
+    networks:
+      - webnet
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME_DEVELOPMENT}
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+networks:
+  webnet:
+volumes:
+  pgdata:
