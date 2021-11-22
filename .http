@@ -1,0 +1,27 @@
+GET http://localhost:3000/
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/
+Content-Type: application/json
+Authorization: Bearer bej8e3yk
+
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "cezarmocanu@senat.com",
+    "password": "123456"
+}
+
+###
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "giuliaradu@senat.com",
+    "password": "123456"
+}

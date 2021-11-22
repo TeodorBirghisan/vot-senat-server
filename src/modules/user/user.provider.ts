@@ -1,9 +1,9 @@
+import { RepositoryKeys } from 'src/core/constants/provider-keys.enum';
 import { User } from './user.entity';
-import { USER_REPOSITORY } from '../../core/constants';
 
-export const userProvider = [
+export const USER_PROVIDER = [
   {
-    provide: USER_REPOSITORY,
+    provide: RepositoryKeys.USER_REPOSITORY,
     useValue: User,
   },
 ];

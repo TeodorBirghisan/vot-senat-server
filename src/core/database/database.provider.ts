@@ -1,25 +1,25 @@
 import { Sequelize } from 'sequelize-typescript';
 import { SEQUELIZE, TEST, DEVELOPMENT, PRODUCTION } from '../constants';
-import { databaseConfig } from './database.config';
+import { DATABASE_CONFIG } from './database.config';
 import { User } from 'src/modules/user/user.entity';
 
-export const databaseProviders = [
+export const DATABASE_PROVIDERS = [
   {
     provide: SEQUELIZE,
     useFactory: async () => {
       let config;
       switch (process.env.NODE_ENV) {
         case DEVELOPMENT:
-          config = databaseConfig.development;
+          config = DATABASE_CONFIG.development;
           break;
         case TEST:
-          config = databaseConfig.test;
+          config = DATABASE_CONFIG.test;
           break;
         case PRODUCTION:
-          config = databaseConfig.production;
+          config = DATABASE_CONFIG.production;
           break;
         default:
-          config = databaseConfig.development;
+          config = DATABASE_CONFIG.development;
       }
       const sequelize = new Sequelize(config);
       sequelize.addModels([User]); //Add models here
