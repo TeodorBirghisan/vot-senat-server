@@ -1,20 +1,21 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { RepositoryKeys } from 'src/core/constants/provider-keys.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(RepositoryKeys.USER_REPOSITORY)
-    private readonly userRepository: typeof User,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.findAll<User>();
+    return this.usersRepository.find();
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne<User>({
+    return this.usersRepository.findOne({
       where: {
         email,
       },
@@ -32,9 +33,11 @@ export class UserService {
       );
     }
 
-    return await this.userRepository.create<User>({
+    const newUser = this.usersRepository.create({
       email,
       password,
     });
+
+    return await this.usersRepository.save(newUser);
   }
 }
