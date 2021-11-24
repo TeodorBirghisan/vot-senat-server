@@ -10,7 +10,6 @@ import { DATABASE_CONFIG } from "./database.config";
             entities: [
               User
             ],
-            synchronize: true,
           })
     ],
     exports: [TypeOrmModule]
