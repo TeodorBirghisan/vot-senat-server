@@ -54,16 +54,39 @@ docker-compose up
 ```
 
 ## Running migrations
+### https://typeorm.io/#/migrations
+### https://typeorm.io/#/using-cli/installing-cli
 
+### Migrations are used to add/revert changes to databases in steps/features
+### TypeORM uses javascript files, so you need to run the migrations after making sure
+### you have a fresh build
 ```bash
-# Run migrations
-$ npx sequelize-cli db:migrate
 
-# Undo migrations
-$ npx sequelize-cli db:migrate:undo
+### First time setup
 
-# Undo all migrations
-$ npx sequelize-cli db:migrate:undo:all
+
+### Build your project to ensure you have a fresh transpilation of current migrations
+npm run build
+### Starting from an empty database you can simply run all the migrations
+npm run typeorm migration:run
+
+
+### Reverting migrations
+### Whenever you need to revert the last changes you can simply run
+### You can execute it multiple times to go back in time
+npm run typeorm migration:revert
+
+### To see all performed migrations just run
+npm run typeorm migration:show
+
+
+### Creting a new migration
+### After making some changes to an entity, say changing the name of a column
+npm run typeorm migration:generate -- -n ChangedEntityName
+### After that you can use migration:run to update the database
+
+### Be careful because you can generate the same modification multiple times
+### To make sure you always have the cleanest migrations generated just build the project
 ```
 
 ## Test
