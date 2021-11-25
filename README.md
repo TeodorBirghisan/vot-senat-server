@@ -82,8 +82,14 @@ npm run typeorm migration:show
 
 ### Creting a new migration
 ### After making some changes to an entity, say changing the name of a column
+npm run build
 npm run typeorm migration:generate -- -n ChangedEntityName
-### After that you can use migration:run to update the database
+
+
+### After that you can use 
+npm run build
+migration:run 
+### to update the database
 
 ### Be careful because you can generate the same modification multiple times
 ### To make sure you always have the cleanest migrations generated just build the project

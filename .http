@@ -5,7 +5,46 @@ Content-Type: application/json
 
 GET http://localhost:3000/
 Content-Type: application/json
-Authorization: Bearer lpzl1sqa
+Authorization: Bearer inej2rko
+
+###
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "owner@senat.com",
+    "password": "123456"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "owner@senat.com",
+    "password": "123456"
+}
+
+###
+
+PUT http://localhost:3000/roles/user/grant
+Content-Type: application/json
+Authorization: Bearer 7ftyg6b2
+
+{
+    "userId": 1,
+    "roles": ["CAN_VIEW_Z"]
+}
+
+###
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "cezarmocanu@senat.com",
+    "password": "123456"
+}
 
 ###
 
@@ -17,11 +56,40 @@ Content-Type: application/json
     "password": "123456"
 }
 
+
 ###
-POST http://localhost:3000/auth/signup
+
+PUT http://localhost:3000/roles/user/grant
 Content-Type: application/json
+Authorization: Bearer inej2rko
 
 {
-    "email": "cezarmocanu@senat.com",
-    "password": "123456"
+    "userId": 2,
+    "roles": ["CAN_VIEW_X", "CAN_VIEW_Y"]
 }
+
+###
+
+GET http://localhost:3000/x
+Content-Type: application/json
+Authorization: Bearer inej2rko
+
+
+###
+
+GET http://localhost:3000/y
+Content-Type: application/json
+Authorization: Bearer inej2rko
+
+
+###
+
+GET http://localhost:3000/z
+Content-Type: application/json
+Authorization: Bearer inej2rko
+
+###
+
+GET http://localhost:3000/xy
+Content-Type: application/json
+Authorization: Bearer inej2rko

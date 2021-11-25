@@ -9,6 +9,7 @@ import { SecurityService } from '../security/security.service';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 
+//TODO move logic in a LoginService/AuthService
 @Controller('/auth')
 export class LoginController {
   constructor(
@@ -45,7 +46,7 @@ export class LoginController {
     }
 
     return {
-      token: this.securityService.createToken(),
+      token: await this.securityService.createToken(user),
     };
   }
 
@@ -60,6 +61,7 @@ export class LoginController {
     status?: number;
     token?: string;
   }> {
+    //TODO bcrypt the password so that it is not visible in the database
     await this.userService.saveOne(email, password);
     return {
       message: 'User created successfully',
