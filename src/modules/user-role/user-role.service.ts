@@ -27,7 +27,7 @@ export class UserRoleService {
   }
 
   async checkPermission(
-    token: String,
+    token: string,
     roles: UserRolesEnum[],
   ): Promise<boolean> {
     const securityToken = await this.securityTokenRepository.findOne({
