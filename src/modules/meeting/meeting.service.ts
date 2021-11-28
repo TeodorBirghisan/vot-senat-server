@@ -9,4 +9,8 @@ export class MeetingService {
     @InjectRepository(Meeting)
     private meetingsRepository: Repository<Meeting>,
   ) {}
+
+  async getAll(): Promise<Meeting[]> {
+    return this.meetingsRepository.find();
+  }
 }
