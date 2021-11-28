@@ -11,19 +11,14 @@ import { UserRoleModule } from './modules/user-role/user-role.module';
 import { UserRoleService } from './modules/user-role/user-role.service';
 
 @Module({
-  imports: [
-    DatabaseModule,
-    AuthModule,
-    LoginModule,
-    UserRoleModule,
-    ],
+  imports: [DatabaseModule, AuthModule, LoginModule, UserRoleModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { 
+export class AppModule {
   constructor(
     private connection: Connection,
-    private userRoleService: UserRoleService
+    private userRoleService: UserRoleService,
   ) {
     // userRoleService.seed();
   }

@@ -1,5 +1,8 @@
 import * as dotenv from 'dotenv';
-import { IDatabaseConfig,IDatabaseConfigAttributes } from 'src/modules/database/database-config.interface';
+import {
+  IDatabaseConfig,
+  IDatabaseConfigAttributes,
+} from 'src/modules/database/database-config.interface';
 
 dotenv.config();
 
@@ -29,4 +32,5 @@ const DATABASE_CONFIG_MAP: IDatabaseConfig = {
   },
 };
 
-export const DATABASE_CONFIG: IDatabaseConfigAttributes = DATABASE_CONFIG_MAP[process.env.ACTIVE_PROFILE];
+export const DATABASE_CONFIG: IDatabaseConfigAttributes =
+  DATABASE_CONFIG_MAP[process.env.ACTIVE_PROFILE];

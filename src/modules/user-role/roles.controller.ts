@@ -1,39 +1,46 @@
-import { Body, Controller, HttpException, HttpStatus, ParseIntPipe, Put, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "../auth/auth.guard";
-import { User } from "../user/user.entity";
-import { UserService } from "../user/user.service";
-import { UserRolesEnum } from "./user-role.entity";
-import { UserRoleService } from "./user-role.service";
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  ParseIntPipe,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '../auth/auth.guard';
+import { User } from '../user/user.entity';
+import { UserService } from '../user/user.service';
+import { UserRolesEnum } from './user-role.entity';
+import { UserRoleService } from './user-role.service';
 
-@Controller("/roles")
+@Controller('/roles')
 @UseGuards(AuthGuard)
 export class RolesController {
-    constructor(
-        private userRoleService: UserRoleService,
-        private userService: UserService
-    ){}
+  constructor(
+    private userRoleService: UserRoleService,
+    private userService: UserService,
+  ) {}
 
+  //TBD Put request (because it updates a property)?
+  //TBD endpoint structure?
+  //TBD does this need multiple controllers for users and other entities with roles?
+  @Put('/user/grant')
+  async grantUserRoles(
+    @Body('userId', ParseIntPipe) userId: number,
+    @Body('roles') roles: UserRolesEnum[],
+  ) {
+    //TODO ensure that id is valid
+    //TODO check if roles are inline with the ones in the enum
+    //TODO add correct error responses
+    const user: User = await this.userService.findOneById(userId);
 
-    //TBD Put request (because it updates a property)?
-    //TBD endpoint structure?
-    //TBD does this need multiple controllers for users and other entities with roles?
-    @Put("/user/grant")
-    async grantUserRoles(
-        @Body("userId", ParseIntPipe) userId: number,
-        @Body("roles") roles: UserRolesEnum[]
-    ){
-        //TODO ensure that id is valid 
-        //TODO check if roles are inline with the ones in the enum
-        //TODO add correct error responses
-        const user: User = await this.userService.findOneById(userId);
-
-        if(!user) {
-            throw new HttpException(
-                "You don't have an account with this id",
-                HttpStatus.NOT_FOUND,
-            );
-        }
-
-        await this.userRoleService.grantRolesToUser(user, roles);
+    if (!user) {
+      throw new HttpException(
+        "You don't have an account with this id",
+        HttpStatus.NOT_FOUND,
+      );
     }
+
+    await this.userRoleService.grantRolesToUser(user, roles);
+  }
 }

@@ -20,8 +20,8 @@ export class AuthGuard implements CanActivate {
 
     const token: string | null = request.headers.authorization.split(' ')?.[1];
 
-    //TBD dont' allow multiple users to use the same token?    
-    if (!await this.securityService.checkToken(token)) {
+    //TBD dont' allow multiple users to use the same token?
+    if (!(await this.securityService.checkToken(token))) {
       return false;
     }
 
