@@ -15,8 +15,8 @@ export class Meeting {
   @Column({ nullable: true })
   description: string;
 
-  @Column()
-  organizator: string;
+  @Column({ type: 'varchar' })
+  organizer: User;
 
   @Column()
   startDate: Date;
