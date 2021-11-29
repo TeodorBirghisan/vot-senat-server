@@ -8,7 +8,7 @@ export class MeetingsController {
   constructor(private meetingService: MeetingService) {}
 
   @Get()
-  getMeetings(): string {
-    return 'Meetings';
+  getMeetings(): Promise<Meeting[]> {
+    return this.meetingService.getAll();
   }
 }

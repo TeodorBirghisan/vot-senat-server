@@ -10,7 +10,7 @@ export class MeetingService {
     @InjectRepository(Meeting)
     private meetingsRepository: Repository<Meeting>,
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async getAll(): Promise<Meeting[]> {
