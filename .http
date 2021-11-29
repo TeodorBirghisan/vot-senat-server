@@ -93,3 +93,9 @@ Authorization: Bearer inej2rko
 GET http://localhost:3000/xy
 Content-Type: application/json
 Authorization: Bearer inej2rko
+
+
+###
+
+GET http://localhost:3000/meetings
+Content-Type: application/json
