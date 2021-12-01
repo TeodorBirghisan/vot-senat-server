@@ -43,7 +43,7 @@ export class UserService {
       );
     }
 
-    const newUser = this.usersRepository.create({
+    const newUser:User = this.usersRepository.create({
       email,
       password,
     });
