@@ -16,15 +16,15 @@ import { UserRoleService } from './modules/user-role/user-role.service';
     AuthModule,
     LoginModule,
     UserRoleModule,
-    InvitationModule
-    ],
+    InvitationModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { 
+export class AppModule {
   constructor(
     private connection: Connection,
-    private userRoleService: UserRoleService
+    private userRoleService: UserRoleService,
   ) {
     //CREATE OWNER IN SEED
     // userRoleService.seed();

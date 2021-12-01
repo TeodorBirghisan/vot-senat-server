@@ -1,4 +1,4 @@
-import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -43,7 +43,7 @@ export class UserService {
       );
     }
 
-    const newUser:User = this.usersRepository.create({
+    const newUser: User = this.usersRepository.create({
       email,
       password,
     });

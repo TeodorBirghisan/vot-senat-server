@@ -6,7 +6,7 @@ import {
   Post,
   Req,
   UseGuards,
-  Request
+  Request,
 } from '@nestjs/common';
 import { InvitationGuard } from '../invitation/invitation.guard';
 import { InvitationService } from '../invitation/invitation.service';
@@ -20,7 +20,7 @@ export class LoginController {
   constructor(
     private readonly userService: UserService,
     private readonly securityService: SecurityService,
-    private readonly invitationService: InvitationService
+    private readonly invitationService: InvitationService,
   ) {}
 
   @Post('/login')
@@ -70,7 +70,7 @@ export class LoginController {
     token?: string;
   }> {
     //TODO bcrypt the password so that it is not visible in the database
-    await this.userService.saveOne(email, password); 
+    await this.userService.saveOne(email, password);
     return {
       message: 'User created successfully',
     };
@@ -90,23 +90,21 @@ export class LoginController {
     token?: string;
   }> {
     //TODO bcrypt the password so that it is not visible in the database
-    const invitationToken: string = request.headers["authorization"];
+    const invitationToken: string = request.headers['authorization'];
 
-    const user:User = await this.userService.saveOne(email, password);
+    const user: User = await this.userService.saveOne(email, password);
 
-    if(!user) {
-      throw new HttpException(
-        'Could not create user',
-        HttpStatus.CONFLICT,
-      );
+    if (!user) {
+      throw new HttpException('Could not create user', HttpStatus.CONFLICT);
     }
     //TBD instead of deletion, the invitation should be invalidated, instead of deleted
-    const deleteionSuccessfull = await this.invitationService.deleteInvitationByToken(invitationToken);
+    const deleteionSuccessfull =
+      await this.invitationService.deleteInvitationByToken(invitationToken);
 
-    if(!deleteionSuccessfull) {
+    if (!deleteionSuccessfull) {
       //TODO rollback user creation
       throw new HttpException(
-        "Error deleting deleting the invitation",
+        'Error deleting deleting the invitation',
         HttpStatus.CONFLICT,
       );
     }

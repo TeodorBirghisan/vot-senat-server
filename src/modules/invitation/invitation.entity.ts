@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Invitation {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    invitationToken: string;
+  @Column()
+  invitationToken: string;
 
-    //TODO TBD invitation should have the email of the invited person?
-    //TODO TBD invitation with expiration date?
+  //TODO TBD invitation should have the email of the invited person?
+  //TODO TBD invitation with expiration date?
 }
