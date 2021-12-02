@@ -5,8 +5,8 @@ import { AppService } from './app.service';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/database/database.module';
+import { InvitationModule } from './modules/invitation/invitation.module';
 import { LoginModule } from './modules/login/login.module';
-import { UserPermissionModule } from './modules/permission/user-permission.module';
 import { UserRoleModule } from './modules/user-role/user-role.module';
 import { UserRoleService } from './modules/user-role/user-role.service';
 
@@ -16,15 +16,17 @@ import { UserRoleService } from './modules/user-role/user-role.service';
     AuthModule,
     LoginModule,
     UserRoleModule,
-    ],
+    InvitationModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { 
+export class AppModule {
   constructor(
     private connection: Connection,
-    private userRoleService: UserRoleService
+    private userRoleService: UserRoleService,
   ) {
+    //CREATE OWNER IN SEED
     // userRoleService.seed();
   }
 }
