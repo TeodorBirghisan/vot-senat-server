@@ -3,8 +3,10 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Meeting } from '../meeting/meeting.entity';
 import { UserRole } from '../user-role/user-role.entity';
 
 @Entity()
@@ -26,6 +28,9 @@ export class User {
 
   @Column({ nullable: true })
   phoneNumber: string;
+
+  @OneToMany(() => Meeting, (meeting) => meeting.organizer)
+  meetings: Meeting[]
 
   @ManyToMany(() => UserRole)
   @JoinTable()

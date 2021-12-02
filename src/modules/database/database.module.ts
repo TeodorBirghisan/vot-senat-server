@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Meeting } from '../meeting/meeting.entity';
 import { Invitation } from '../invitation/invitation.entity';
 import { SecurityToken } from '../security/security-token.entity';
 import { UserRole } from '../user-role/user-role.entity';
@@ -10,7 +11,7 @@ import { DATABASE_CONFIG } from './database.config';
   imports: [
     TypeOrmModule.forRoot({
       ...(DATABASE_CONFIG as any),
-      entities: [User, SecurityToken, UserRole, Invitation],
+      entities: [User, SecurityToken, UserRole, Meeting,Invitation],
     }),
   ],
   exports: [TypeOrmModule],

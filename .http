@@ -102,6 +102,7 @@ Authorization: Bearer v6ksov6u
 
 ###
 ###TODO remove invitation from url
+
 POST http://localhost:3000/auth/invitation/signup
 Content-Type: application/json
 Authorization: lbo6y9lc
@@ -110,3 +111,10 @@ Authorization: lbo6y9lc
     "email": "invited@senat.com",
     "password": "123456"
 }
+
+###
+
+GET http://localhost:3000/meetings
+Content-Type: application/json
+
+
