@@ -30,11 +30,11 @@ Content-Type: application/json
 
 PUT http://localhost:3000/roles/user/grant
 Content-Type: application/json
-Authorization: Bearer 7ftyg6b2
+Authorization: Bearer v6ksov6u
 
 {
-    "userId": 1,
-    "roles": ["CAN_VIEW_Z"]
+    "userId": 2,
+    "roles": ["CAN_CREATE_INVITATION"]
 }
 
 ###
@@ -94,8 +94,27 @@ GET http://localhost:3000/xy
 Content-Type: application/json
 Authorization: Bearer inej2rko
 
+###
+
+POST http://localhost:3000/invitation/
+Content-Type: application/json
+Authorization: Bearer v6ksov6u
+
+###
+###TODO remove invitation from url
+
+POST http://localhost:3000/auth/invitation/signup
+Content-Type: application/json
+Authorization: lbo6y9lc
+
+{
+    "email": "invited@senat.com",
+    "password": "123456"
+}
 
 ###
 
 GET http://localhost:3000/meetings
 Content-Type: application/json
+
+

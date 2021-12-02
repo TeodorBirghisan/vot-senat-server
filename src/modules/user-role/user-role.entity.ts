@@ -6,6 +6,8 @@ export enum UserRolesEnum {
   CAN_VIEW_X = 'CAN_VIEW_X',
   CAN_VIEW_Y = 'CAN_VIEW_Y',
   CAN_VIEW_Z = 'CAN_VIEW_Z',
+  CAN_CREATE_INVITATION = 'CAN_CREATE_INVITATION',
+  //ADD CAN_GRANT_ROLES
 }
 
 @Entity()
