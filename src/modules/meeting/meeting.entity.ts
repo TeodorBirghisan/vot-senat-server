@@ -3,6 +3,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
@@ -16,6 +17,7 @@ export class Meeting {
   description: string;
 
   @Column({ type: 'varchar' })
+  @ManyToOne(() => User, (user) => user.meetings)
   organizer: User;
 
   @Column()
