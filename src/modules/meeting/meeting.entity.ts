@@ -4,8 +4,10 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Topic } from '../topic/topic.entity';
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -28,6 +30,9 @@ export class Meeting {
 
   @Column()
   title: string;
+
+  @OneToMany(() => Topic, (topic) => topic.meeting)
+  topics: Topic[];
 
   @ManyToMany(() => User)
   @JoinTable()
