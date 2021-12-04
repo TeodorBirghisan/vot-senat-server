@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { Meeting } from './meeting.entity';
 import { MeetingService } from './meeting.service';
@@ -10,5 +10,10 @@ export class MeetingsController {
   @Get()
   getMeetings(): Promise<Meeting[]> {
     return this.meetingService.getAll();
+  }
+
+  @Post()
+  createMeeting(@Body('title') title: string): Promise<Meeting> {
+    return this.meetingService.saveOne(title, new Date(), 'TO_BE_DISSCUSSED');
   }
 }
