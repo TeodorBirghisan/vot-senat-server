@@ -30,7 +30,7 @@ export class User {
   phoneNumber: string;
 
   @OneToMany(() => Meeting, (meeting) => meeting.organizer)
-  meetings: Meeting[]
+  meetings: Meeting[];
 
   @ManyToMany(() => UserRole)
   @JoinTable()
