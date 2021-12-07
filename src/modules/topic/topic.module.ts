@@ -4,13 +4,17 @@ import { Topic } from './topic.entity';
 import { Meeting } from '../meeting/meeting.entity';
 import { TopicService } from './topic.service';
 import { TopicsController } from './topic.controller';
-import { MeetingService } from '../meeting/meeting.service';
-import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
+import { UserModule } from '../user/user.module';
+import { MeetingModule } from '../meeting/meeting.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Topic, Meeting, User])],
-  providers: [TopicService, MeetingService, UserService],
+  imports: [
+    TypeOrmModule.forFeature([Topic, Meeting, User]),
+    UserModule,
+    MeetingModule,
+  ],
+  providers: [TopicService],
   controllers: [TopicsController],
   exports: [TopicService],
 })

@@ -118,7 +118,7 @@ GET http://localhost:3000/meetings
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/meetings
+POST http://localhost:3000/meetings/createOne/1
 Content-Type: application/json
 
 {
@@ -127,7 +127,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/topics/saveToMeeting/4
+POST http://localhost:3000/topics/saveToMeeting/1
 Content-Type: application/json
 
 {

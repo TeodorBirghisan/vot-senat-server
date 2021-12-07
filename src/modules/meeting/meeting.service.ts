@@ -30,16 +30,18 @@ export class MeetingService {
     title: string,
     startDate: Date,
     status: string,
+    userId: number,
   ): Promise<Meeting> {
-    //TODO: change mockUser to user making the request
-    const mockUser: User = await this.userService.saveOne('dummyuser', '1234');
+    const user: User = await this.userService.findOneById(userId);
 
     const newMeeting: Meeting = this.meetingsRepository.create({
-      startDate,
-      title,
-      organizer: mockUser,
-      status,
+      title: title,
+      startDate: startDate,
+      status: status,
+      organizer: user,
+      description: 'description test',
     });
-    return await this.meetingsRepository.save(newMeeting);
+
+    return this.meetingsRepository.save(newMeeting);
   }
 }

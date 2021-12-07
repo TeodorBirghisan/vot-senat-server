@@ -18,7 +18,6 @@ export class Meeting {
   @Column({ nullable: true })
   description: string;
 
-  //TODO: TBD organizer tpye to string as for now all the user obj is saved in the organizer column
   @Column({ type: 'varchar' })
   @ManyToOne(() => User, (user) => user.meetings)
   organizer: User;
