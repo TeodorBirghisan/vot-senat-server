@@ -9,6 +9,7 @@ import { InvitationModule } from './modules/invitation/invitation.module';
 import { LoginModule } from './modules/login/login.module';
 import { MeetingModule } from './modules/meeting/meeting.module';
 import { UserPermissionModule } from './modules/permission/user-permission.module';
+import { TopicModule } from './modules/topic/topic.module';
 import { UserRoleModule } from './modules/user-role/user-role.module';
 import { UserRoleService } from './modules/user-role/user-role.service';
 
@@ -20,6 +21,7 @@ import { UserRoleService } from './modules/user-role/user-role.service';
     UserRoleModule,
     MeetingModule,
     InvitationModule,
+    TopicModule,
   ],
   controllers: [AppController],
   providers: [AppService],
