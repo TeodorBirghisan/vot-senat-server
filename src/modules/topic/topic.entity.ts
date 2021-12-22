@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Vote } from '../vote/vote.entity';
 import { Meeting } from './../meeting/meeting.entity';
 
 @Entity()
@@ -14,4 +21,7 @@ export class Topic {
 
   @ManyToOne(() => Meeting, (meeting) => meeting.topics)
   meeting: Meeting;
+
+  @OneToMany(() => Vote, (vote) => vote.topic)
+  votes: Vote[];
 }

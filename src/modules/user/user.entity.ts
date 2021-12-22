@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Meeting } from '../meeting/meeting.entity';
 import { UserRole } from '../user-role/user-role.entity';
+import { Vote } from '../vote/vote.entity';
 
 @Entity()
 export class User {
@@ -35,4 +36,7 @@ export class User {
   @ManyToMany(() => UserRole)
   @JoinTable()
   roles: UserRole[];
+
+  @OneToMany(() => Vote, (vote) => vote.user)
+  votes: Vote[];
 }
