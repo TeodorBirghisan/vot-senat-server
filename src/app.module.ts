@@ -12,6 +12,7 @@ import { UserPermissionModule } from './modules/permission/user-permission.modul
 import { TopicModule } from './modules/topic/topic.module';
 import { UserRoleModule } from './modules/user-role/user-role.module';
 import { UserRoleService } from './modules/user-role/user-role.service';
+import { VoteModule } from './modules/vote/vote.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserRoleService } from './modules/user-role/user-role.service';
     MeetingModule,
     InvitationModule,
     TopicModule,
+    VoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
