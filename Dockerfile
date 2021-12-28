@@ -15,7 +15,9 @@ RUN npm run build
 FROM node:16.13 As production
 
 ARG NODE_ENV=production
+ARG ACTIVE_PROFILE=production
 ENV NODE_ENV=${NODE_ENV}
+ENV ACTIVE_PROFILE=${ACTIVE_PROFILE}
 
 WORKDIR /app
 

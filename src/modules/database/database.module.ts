@@ -13,6 +13,7 @@ import { Topic } from '../topic/topic.entity';
     TypeOrmModule.forRoot({
       ...(DATABASE_CONFIG as any),
       entities: [User, SecurityToken, UserRole, Meeting, Invitation, Topic],
+      ssl: { rejectUnauthorized: false },
     }),
   ],
   exports: [TypeOrmModule],
