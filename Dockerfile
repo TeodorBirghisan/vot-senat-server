@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --only=development
+RUN npm install
 
 COPY . .
 
@@ -14,16 +14,14 @@ RUN npm run build
 
 FROM node:16.13 As production
 
-ARG NODE_ENV=production
-ARG ACTIVE_PROFILE=production
-ENV NODE_ENV=${NODE_ENV}
-ENV ACTIVE_PROFILE=${ACTIVE_PROFILE}
+ARG MODE=PROD
+ENV MODE=${MODE}
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --only=production
+RUN npm install
 
 COPY . .
 
