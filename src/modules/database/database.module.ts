@@ -7,12 +7,21 @@ import { UserRole } from '../user-role/user-role.entity';
 import { User } from '../user/user.entity';
 import { DATABASE_CONFIG } from './database.config';
 import { Topic } from '../topic/topic.entity';
+import { Vote } from '../vote/vote.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       ...(DATABASE_CONFIG as any),
-      entities: [User, SecurityToken, UserRole, Meeting, Invitation, Topic],
+      entities: [
+        User,
+        SecurityToken,
+        UserRole,
+        Meeting,
+        Invitation,
+        Topic,
+        Vote,
+      ],
     }),
   ],
   exports: [TypeOrmModule],

@@ -24,4 +24,12 @@ export class TopicService {
 
     return await this.topicRepository.save(topic);
   }
+
+  async findOneById(topicId: number): Promise<Topic> {
+    return this.topicRepository.findOne({
+      where: {
+        id: topicId,
+      },
+    });
+  }
 }

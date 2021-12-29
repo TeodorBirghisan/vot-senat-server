@@ -18,7 +18,6 @@ export class Meeting {
   @Column({ nullable: true })
   description: string;
 
-  @Column({ type: 'varchar' })
   @ManyToOne(() => User, (user) => user.meetings)
   organizer: User;
 
