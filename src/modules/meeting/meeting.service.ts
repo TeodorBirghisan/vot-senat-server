@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { Meeting } from './meeting.entity';
+import { MEETING_STATUS_TO_BE_DISSCUSSED } from 'src/core/constants';
+import { MeetingDTO } from './meeting.dto';
 
 @Injectable()
 export class MeetingService {
@@ -25,21 +27,15 @@ export class MeetingService {
     });
   }
 
-  //TODO: add constants for meeting status, date validation and parse
-  async saveOne(
-    title: string,
-    startDate: Date,
-    status: string,
-    userId: number,
-  ): Promise<Meeting> {
+  async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
     const user: User = await this.userService.findOneById(userId);
 
     const newMeeting: Meeting = this.meetingsRepository.create({
-      title: title,
-      startDate: startDate,
-      status: status,
+      title: meeting.title,
+      startDate: meeting.startDate,
+      status: MEETING_STATUS_TO_BE_DISSCUSSED,
       organizer: user,
-      description: 'description test',
+      description: meeting.description,
     });
 
     return this.meetingsRepository.save(newMeeting);

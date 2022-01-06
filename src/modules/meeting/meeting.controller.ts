@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
+import { MeetingDTO } from './meeting.dto';
 
 import { Meeting } from './meeting.entity';
 import { MeetingService } from './meeting.service';
@@ -13,16 +22,19 @@ export class MeetingsController {
   }
 
   //TODO: Organizer = user making the req. For now userId will replace that
-  @Post('/createOne/:userId')
+  @Post('/:userId')
   createMeeting(
-    @Param('userId') userId: number,
-    @Body('title') title: string,
-  ): Promise<Meeting> {
-    return this.meetingService.saveOne(
-      title,
-      new Date(),
-      'TO_BE_DISSCUSSED',
-      userId,
-    );
+    @Param(
+      'userId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    userId: number,
+    @Body() meeting: MeetingDTO,
+  ) {
+    if (!meeting.description) {
+      meeting.description = 'No description provided';
+    }
+
+    return this.meetingService.saveOne(userId, meeting);
   }
 }
