@@ -16,7 +16,7 @@ import { UserService } from '../user/user.service';
 
 //TODO move logic in a LoginService/AuthService
 @Controller('/auth')
-export class LoginController {
+export class AuthController {
   constructor(
     private readonly userService: UserService,
     private readonly securityService: SecurityService,
