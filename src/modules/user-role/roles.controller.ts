@@ -26,10 +26,13 @@ export class RolesController {
   //TBD does this need multiple controllers for users and other entities with roles?
   @Put('/user/grant')
   async grantUserRoles(
-    @Body('userId', ParseIntPipe) userId: number,
+    @Body(
+      'userId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    userId: number,
     @Body('roles') roles: UserRolesEnum[],
   ) {
-    //TODO ensure that id is valid
     //TODO check if roles are inline with the ones in the enum
     //TODO add correct error responses
     const user: User = await this.userService.findOneById(userId);
