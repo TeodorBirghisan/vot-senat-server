@@ -1,4 +1,11 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { Topic } from './topic.entity';
 import { TopicService } from './topic.service';
 
@@ -8,7 +15,11 @@ export class TopicsController {
 
   @Post('/saveToMeeting/:id')
   addTopicToMeeting(
-    @Param('id') id: number,
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
     @Body('content') content: string,
   ): Promise<Topic> {
     return this.topicService.saveTopicToMeeting(id, content);

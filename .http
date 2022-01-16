@@ -126,12 +126,13 @@ GET http://localhost:3000/meetings
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/meetings/createOne/1
+POST http://localhost:3000/meetings/1
 Content-Type: application/json
 
 {
     "title": "test title",
-    "startDate": "20-10-2021"
+    "startDate": "12-30-2021",
+    "description": ""
 }
 
 ###
