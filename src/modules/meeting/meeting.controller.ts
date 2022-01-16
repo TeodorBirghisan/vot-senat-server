@@ -37,4 +37,20 @@ export class MeetingsController {
 
     return this.meetingService.saveOne(userId, meeting);
   }
+
+  @Post('/join/:meetingId/:userId')
+  joinMeeting(
+    @Param(
+      'meetingId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    meetingId: number,
+    @Param(
+      'userId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    userId: number,
+  ) {
+    return this.meetingService.joinMeeting(meetingId, userId);
+  }
 }

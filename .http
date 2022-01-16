@@ -126,13 +126,13 @@ GET http://localhost:3000/meetings
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/meetings/1
+POST http://localhost:3000/meetings/8
 Content-Type: application/json
 
 {
     "title": "test title",
-    "startDate": "12-30-2021",
-    "description": ""
+    "startDate": "01-18-2022",
+    "description": "Test organizer"
 }
 
 ###
@@ -144,10 +144,12 @@ Content-Type: application/json
 }
 
 ###
-
 POST http://localhost:3000/vote/1/1
 Content-Type: application/json
 
 {
     "voteValue": "YES"
 }
+
+###
+POST http://localhost:3000/meetings/join/19/8

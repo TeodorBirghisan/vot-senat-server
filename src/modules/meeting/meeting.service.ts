@@ -1,3 +1,4 @@
+import { MEETING_STATUS_IN_PROGRESS } from './../../core/constants/index';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -27,6 +28,13 @@ export class MeetingService {
     });
   }
 
+  async findOneByIdUserRelation(id: number): Promise<Meeting> {
+    return this.meetingsRepository.findOne({
+      where: { id },
+      relations: ['organizer'],
+    });
+  }
+
   async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
     const user: User = await this.userService.findOneById(userId);
 
@@ -39,5 +47,26 @@ export class MeetingService {
     });
 
     return this.meetingsRepository.save(newMeeting);
+  }
+
+  async joinMeeting(meetingId: number, userId: number): Promise<Meeting> {
+    const meetingToJoin: Meeting = await this.findOneByIdUserRelation(
+      meetingId,
+    );
+    const userToJoin: User = await this.userService.findOneById(userId);
+    const timeToJoin: Date = new Date();
+
+    const meetingStartDate: Date = meetingToJoin.startDate;
+    if (timeToJoin < meetingStartDate) {
+      console.log('Early to join');
+      throw new HttpException(
+        'Too early to join this meeting',
+        HttpStatus.FORBIDDEN,
+      );
+    } else {
+      meetingToJoin.meetingParticipation = [userToJoin];
+      meetingToJoin.status = MEETING_STATUS_IN_PROGRESS;
+      return await this.meetingsRepository.save(meetingToJoin);
+    }
   }
 }
