@@ -8,6 +8,7 @@ import { User } from '../user/user.entity';
 import { DATABASE_CONFIG } from './database.config';
 import { Topic } from '../topic/topic.entity';
 import { Vote } from '../vote/vote.entity';
+import { ParticipationEntry } from '../participation-entry/partitcipation-entry.entity';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { Vote } from '../vote/vote.entity';
         Invitation,
         Topic,
         Vote,
+        ParticipationEntry,
       ],
     }),
   ],

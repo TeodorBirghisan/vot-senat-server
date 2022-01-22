@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ParticipationEntry } from '../participation-entry/partitcipation-entry.entity';
 import { Topic } from '../topic/topic.entity';
 import { User } from '../user/user.entity';
 
@@ -33,7 +34,6 @@ export class Meeting {
   @OneToMany(() => Topic, (topic) => topic.meeting)
   topics: Topic[];
 
-  @ManyToMany(() => User)
-  @JoinTable()
-  meetingParticipation: User[];
+  @OneToMany(() => ParticipationEntry, (paticipationEntry) =>  paticipationEntry.meeting)
+  paticipationEntries: ParticipationEntry[];
 }

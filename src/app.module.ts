@@ -13,6 +13,7 @@ import { UserRoleModule } from './modules/user-role/user-role.module';
 import { UserRoleService } from './modules/user-role/user-role.service';
 import { VoteModule } from './modules/vote/vote.module';
 import { MailModule } from './modules/mail/mail.module';
+import { ParticipationEntryModule } from './modules/participation-entry/participation-entry.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MailModule } from './modules/mail/mail.module';
     TopicModule,
     VoteModule,
     MailModule,
+    ParticipationEntryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

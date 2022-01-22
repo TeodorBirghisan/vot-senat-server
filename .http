@@ -152,4 +152,4 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/meetings/join/19/8
+POST http://localhost:3000/meetings/join/2/2

@@ -37,7 +37,8 @@ export class MeetingService {
 
   async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
     const user: User = await this.userService.findOneById(userId);
-
+    //TODO check if user exists otherwise throw
+    //because organizer is null
     const newMeeting: Meeting = this.meetingsRepository.create({
       title: meeting.title,
       startDate: meeting.startDate,
@@ -64,7 +65,9 @@ export class MeetingService {
         HttpStatus.FORBIDDEN,
       );
     } else {
-      meetingToJoin.meetingParticipation = [userToJoin];
+      // meetingToJoin.meetingParticipation = [...meetingToJoin.meetingParticipation, userToJoin];
+
+      //TODO change status of meeting
       meetingToJoin.status = MEETING_STATUS_IN_PROGRESS;
       return await this.meetingsRepository.save(meetingToJoin);
     }

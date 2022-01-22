@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Meeting } from '../meeting/meeting.entity';
+import { ParticipationEntry } from '../participation-entry/partitcipation-entry.entity';
 import { UserRole } from '../user-role/user-role.entity';
 import { Vote } from '../vote/vote.entity';
 
@@ -39,4 +40,7 @@ export class User {
 
   @OneToMany(() => Vote, (vote) => vote.user)
   votes: Vote[];
+
+  @OneToMany(() => ParticipationEntry, (paticipationEntry) =>  paticipationEntry.user)
+  paticipationEntries: ParticipationEntry[];
 }
