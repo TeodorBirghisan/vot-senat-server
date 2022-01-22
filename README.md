@@ -93,6 +93,8 @@ migration:run
 
 ### Be careful because you can generate the same modification multiple times
 ### To make sure you always have the cleanest migrations generated just build the project
+
+### To use the email server it might be necessary to allow unsecure apps in the gmail app
 ```
 
 ## Test

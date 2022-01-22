@@ -12,8 +12,10 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "owner@senat.com",
-    "password": "123456"
+    "email": "birghisanteodor@yahoo.com",
+    "password": "123",
+    "firstName": "Teodor",
+    "lastName": "Birghisan"
 }
 
 ###
@@ -22,18 +24,18 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "owner@senat.com",
-    "password": "123456"
+    "email": "birghisanteodor@yahoo.com",
+    "password": "123"
 }
 
 ###
 
 PUT http://localhost:3000/roles/user/grant
 Content-Type: application/json
-Authorization: Bearer v6ksov6u
+Authorization: Bearer t3zcf5iq
 
 {
-    "userId": 2,
+    "userId": 8,
     "roles": ["CAN_CREATE_INVITATION"]
 }
 
@@ -98,7 +100,11 @@ Authorization: Bearer inej2rko
 
 POST http://localhost:3000/invitation/
 Content-Type: application/json
-Authorization: Bearer v6ksov6u
+Authorization: Bearer t3zcf5iq
+
+{
+    "email": "birghisanteodor@yahoo.com"
+}
 
 ###
 ###TODO remove invitation from url
@@ -109,7 +115,9 @@ Authorization: lbo6y9lc
 
 {
     "email": "invited@senat.com",
-    "password": "123456"
+    "password": "123456",
+    "firstName": "name 1",
+    "lastName": "name 2"
 }
 
 ###
@@ -118,12 +126,13 @@ GET http://localhost:3000/meetings
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/meetings/createOne/1
+POST http://localhost:3000/meetings/1
 Content-Type: application/json
 
 {
     "title": "test title",
-    "startDate": "20-10-2021"
+    "startDate": "12-30-2021",
+    "description": ""
 }
 
 ###

@@ -33,7 +33,12 @@ export class UserService {
   }
 
   //TODO complete the data for the user
-  async saveOne(email: string, password: string): Promise<User> {
+  async saveOne(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+  ): Promise<User> {
     const user: User = await this.findOneByEmail(email);
 
     if (user) {
@@ -46,6 +51,8 @@ export class UserService {
     const newUser: User = this.usersRepository.create({
       email,
       password,
+      firstName,
+      lastName,
     });
 
     return await this.usersRepository.save(newUser);
