@@ -1,0 +1,14 @@
+docker build --target production -t vot-senat .
+
+heroku login
+
+heroku container:login
+
+docker tag vot-senat registry.heroku.com/vot-senat/web
+
+docker push registry.heroku.com/vot-senat/web
+
+heroku container:release -a vot-senat web
+
+heroku logs --tail -a vot-senat
+
