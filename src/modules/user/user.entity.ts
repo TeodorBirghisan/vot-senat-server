@@ -41,6 +41,9 @@ export class User {
   @OneToMany(() => Vote, (vote) => vote.user)
   votes: Vote[];
 
-  @OneToMany(() => ParticipationEntry, (paticipationEntry) =>  paticipationEntry.user)
+  @OneToMany(
+    () => ParticipationEntry,
+    (paticipationEntry) => paticipationEntry.user,
+  )
   paticipationEntries: ParticipationEntry[];
 }

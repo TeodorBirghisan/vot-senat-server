@@ -34,6 +34,9 @@ export class Meeting {
   @OneToMany(() => Topic, (topic) => topic.meeting)
   topics: Topic[];
 
-  @OneToMany(() => ParticipationEntry, (paticipationEntry) =>  paticipationEntry.meeting)
+  @OneToMany(
+    () => ParticipationEntry,
+    (paticipationEntry) => paticipationEntry.meeting,
+  )
   paticipationEntries: ParticipationEntry[];
 }
