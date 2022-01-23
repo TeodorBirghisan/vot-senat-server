@@ -1,3 +1,4 @@
+import { MEETING_STATUS_IN_PROGRESS } from './../../core/constants/index';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -29,6 +30,13 @@ export class MeetingService {
 
   async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
     const user: User = await this.userService.findOneById(userId);
+
+    if (!user) {
+      throw new HttpException(
+        'The user does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     const newMeeting: Meeting = this.meetingsRepository.create({
       title: meeting.title,
