@@ -126,22 +126,26 @@ GET http://localhost:3000/meetings
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/meetings/8
+POST http://localhost:3000/meetings/10
 Content-Type: application/json
 
 {
     "title": "test title",
-    "startDate": "01-18-2022",
+    "startDate": "2022-01-20T14:55:00.000",
     "description": "Test organizer"
 }
 
 ###
-POST http://localhost:3000/topics/saveToMeeting/1
+POST http://localhost:3000/topics/27
 Content-Type: application/json
 
 {
-    "content": "test topic"
+    "content": "test topic 3"
 }
+
+###
+GET http://localhost:3000/topics/27
+Content-Type: application/json
 
 ###
 POST http://localhost:3000/vote/1/1
@@ -152,4 +156,4 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/meetings/join/2/2
+POST http://localhost:3000/participation/joinMeeting/20/8

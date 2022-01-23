@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Topic } from './topic.entity';
 import { Repository } from 'typeorm';
 import { Meeting } from '../meeting/meeting.entity';
@@ -13,6 +13,27 @@ export class TopicService {
     private meetingService: MeetingService,
   ) {}
 
+  async findOneById(topicId: number): Promise<Topic> {
+    return this.topicRepository.findOne({
+      where: {
+        id: topicId,
+      },
+    });
+  }
+
+  async findAllTopicsByMeeting(meetingId: number): Promise<Topic[]> {
+    const meeting: Meeting = await this.meetingService.findOneById(meetingId);
+    if (!meeting) {
+      throw new HttpException('No meeting found', HttpStatus.BAD_REQUEST);
+    }
+    return this.topicRepository.find({
+      where: {
+        meeting: meeting,
+      },
+      relations: ['meeting'],
+    });
+  }
+
   async saveTopicToMeeting(meetingId: number, content: string): Promise<Topic> {
     const meeting: Meeting = await this.meetingService.findOneById(meetingId);
 
@@ -25,11 +46,7 @@ export class TopicService {
     return await this.topicRepository.save(topic);
   }
 
-  async findOneById(topicId: number): Promise<Topic> {
-    return this.topicRepository.findOne({
-      where: {
-        id: topicId,
-      },
-    });
+  async getAllTopicsInMeeting(meetingId: number): Promise<Topic[]> {
+    return await this.findAllTopicsByMeeting(meetingId);
   }
 }

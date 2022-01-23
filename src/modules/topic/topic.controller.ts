@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -13,15 +14,26 @@ import { TopicService } from './topic.service';
 export class TopicsController {
   constructor(private topicService: TopicService) {}
 
-  @Post('/saveToMeeting/:id')
+  @Post('/:meetingId')
   addTopicToMeeting(
     @Param(
-      'id',
+      'meetingId',
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
-    id: number,
+    meetingId: number,
     @Body('content') content: string,
   ): Promise<Topic> {
-    return this.topicService.saveTopicToMeeting(id, content);
+    return this.topicService.saveTopicToMeeting(meetingId, content);
+  }
+
+  @Get('/:meetingId')
+  getAllTopicsInMeeting(
+    @Param(
+      'meetingId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    meetingId: number,
+  ): Promise<Topic[]> {
+    return this.topicService.getAllTopicsInMeeting(meetingId);
   }
 }
