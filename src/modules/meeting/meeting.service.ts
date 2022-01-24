@@ -21,22 +21,21 @@ export class MeetingService {
   }
 
   async findOneById(id: number): Promise<Meeting> {
-    return this.meetingsRepository.findOne({
+    const meeting: Meeting = await this.meetingsRepository.findOne({
       where: {
         id,
       },
     });
+
+    if (!meeting) {
+      throw new HttpException('Meeting not found!', HttpStatus.BAD_REQUEST);
+    }
+
+    return meeting;
   }
 
   async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
     const user: User = await this.userService.findOneById(userId);
-
-    if (!user) {
-      throw new HttpException(
-        'The user does not exist',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
 
     const newMeeting: Meeting = this.meetingsRepository.create({
       title: meeting.title,

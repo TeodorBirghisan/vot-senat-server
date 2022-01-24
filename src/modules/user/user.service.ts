@@ -17,19 +17,37 @@ export class UserService {
   //TODO abstract findOneBy in a common method
   //TBD hasty abstraction?
   async findOneByEmail(email: string): Promise<User> {
-    return this.usersRepository.findOne({
+    const user: User = await this.usersRepository.findOne({
       where: {
         email,
       },
     });
+
+    if (!user) {
+      throw new HttpException(
+        'The user with this email does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return user;
   }
 
   async findOneById(id: number): Promise<User> {
-    return this.usersRepository.findOne({
+    const user: User = await this.usersRepository.findOne({
       where: {
         id,
       },
     });
+
+    if (!user) {
+      throw new HttpException(
+        'This user does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return user;
   }
 
   //TODO complete the data for the user

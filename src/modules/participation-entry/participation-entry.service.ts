@@ -37,15 +37,7 @@ export class ParticipationEntryService {
       meetingId,
     );
 
-    if (!meetingToJoin) {
-      throw new HttpException('Meeting not found!', HttpStatus.BAD_REQUEST);
-    }
-
     const userToJoin: User = await this.userService.findOneById(userId);
-
-    if (!userToJoin) {
-      throw new HttpException('User not found!', HttpStatus.BAD_REQUEST);
-    }
 
     const timeToJoin: Date = new Date();
 

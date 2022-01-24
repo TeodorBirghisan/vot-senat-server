@@ -14,18 +14,25 @@ export class TopicService {
   ) {}
 
   async findOneById(topicId: number): Promise<Topic> {
-    return this.topicRepository.findOne({
+    const topic: Topic = await this.topicRepository.findOne({
       where: {
         id: topicId,
       },
     });
+
+    if (!topic) {
+      throw new HttpException(
+        'This topic does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return topic;
   }
 
   async findAllTopicsByMeeting(meetingId: number): Promise<Topic[]> {
     const meeting: Meeting = await this.meetingService.findOneById(meetingId);
-    if (!meeting) {
-      throw new HttpException('No meeting found', HttpStatus.BAD_REQUEST);
-    }
+
     return this.topicRepository.find({
       where: {
         meeting: meeting,
