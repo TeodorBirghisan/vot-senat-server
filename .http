@@ -136,7 +136,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/topics/27
+POST http://localhost:3000/topics/28
 Content-Type: application/json
 
 {
@@ -157,3 +157,14 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3000/participation/joinMeeting/20/8
+
+###
+DELETE http://localhost:3000/meetings/28
+
+###
+DELETE http://localhost:3000/topics/28
+Content-Type: application/json
+
+{
+    "topicId": "9"
+}
