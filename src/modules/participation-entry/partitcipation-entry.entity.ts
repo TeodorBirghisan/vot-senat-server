@@ -17,7 +17,7 @@ export class ParticipationEntry {
   @JoinColumn()
   user: User;
 
-  @OneToOne(() => Meeting)
+  @OneToOne(() => Meeting, { onDelete: 'CASCADE' })
   @JoinColumn()
   meeting: Meeting;
 

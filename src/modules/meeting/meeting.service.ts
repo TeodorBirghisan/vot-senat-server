@@ -1,4 +1,3 @@
-import { MEETING_STATUS_IN_PROGRESS } from './../../core/constants/index';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -46,5 +45,15 @@ export class MeetingService {
     });
 
     return this.meetingsRepository.save(newMeeting);
+  }
+
+  //TODO: Can only delete the meetings you created
+  async deleteOne(meetingId: number): Promise<Meeting> {
+    const meetingToDelete: Meeting = await this.findOneById(meetingId);
+    const meeting: Meeting = await this.meetingsRepository.remove(
+      meetingToDelete,
+    );
+
+    return meeting;
   }
 }
