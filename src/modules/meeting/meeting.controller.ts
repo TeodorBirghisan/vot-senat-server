@@ -31,11 +31,22 @@ export class MeetingsController {
     )
     userId: number,
     @Body() meeting: MeetingDTO,
-  ) {
+  ): Promise<Meeting> {
     if (!meeting.description) {
       meeting.description = 'No description provided';
     }
 
     return this.meetingService.saveOne(userId, meeting);
+  }
+
+  @Delete('/:meetingId')
+  deleteMeeting(
+    @Param(
+      'meetingId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    meetingId: number,
+  ): Promise<Meeting> {
+    return this.meetingService.deleteOne(meetingId);
   }
 }

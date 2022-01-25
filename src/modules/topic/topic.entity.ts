@@ -19,7 +19,9 @@ export class Topic {
   @Column()
   isActive: boolean;
 
-  @ManyToOne(() => Meeting, (meeting) => meeting.topics)
+  @ManyToOne(() => Meeting, (meeting) => meeting.topics, {
+    onDelete: 'CASCADE',
+  })
   meeting: Meeting;
 
   @OneToMany(() => Vote, (vote) => vote.topic)

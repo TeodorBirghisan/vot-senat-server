@@ -2,7 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Meeting } from '../meeting/meeting.entity';
@@ -13,11 +13,13 @@ export class ParticipationEntry {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (user) => user.paticipationEntries)
   @JoinColumn()
   user: User;
 
-  @OneToOne(() => Meeting)
+  @ManyToOne(() => Meeting, (meeting) => meeting.paticipationEntries, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   meeting: Meeting;
 

@@ -14,24 +14,49 @@ export class TopicService {
   ) {}
 
   async findOneById(topicId: number): Promise<Topic> {
-    return this.topicRepository.findOne({
+    const topic: Topic = await this.topicRepository.findOne({
       where: {
         id: topicId,
       },
     });
+
+    if (!topic) {
+      throw new HttpException(
+        'This topic does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return topic;
   }
 
   async findAllTopicsByMeeting(meetingId: number): Promise<Topic[]> {
     const meeting: Meeting = await this.meetingService.findOneById(meetingId);
-    if (!meeting) {
-      throw new HttpException('No meeting found', HttpStatus.BAD_REQUEST);
-    }
+
     return this.topicRepository.find({
       where: {
         meeting: meeting,
       },
       relations: ['meeting'],
     });
+  }
+
+  async findOneByMeeting(meetingId: number, topicId: number): Promise<Topic> {
+    const topic: Topic = await this.topicRepository.findOne({
+      where: {
+        id: topicId,
+        meeting: meetingId,
+      },
+    });
+
+    if (!topic) {
+      throw new HttpException(
+        'The topic does not exist in this meeting',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return topic;
   }
 
   async saveTopicToMeeting(meetingId: number, content: string): Promise<Topic> {
@@ -48,5 +73,18 @@ export class TopicService {
 
   async getAllTopicsInMeeting(meetingId: number): Promise<Topic[]> {
     return await this.findAllTopicsByMeeting(meetingId);
+  }
+
+  async deleteTopicInMeeting(
+    meetingId: number,
+    topicId: number,
+  ): Promise<Topic> {
+    const topicToDelete: Topic = await this.findOneByMeeting(
+      meetingId,
+      topicId,
+    );
+
+    const deleted: Topic = await this.topicRepository.remove(topicToDelete);
+    return deleted;
   }
 }

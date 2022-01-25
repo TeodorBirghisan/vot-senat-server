@@ -1,4 +1,3 @@
-import { MEETING_STATUS_IN_PROGRESS } from './../../core/constants/index';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -21,22 +20,21 @@ export class MeetingService {
   }
 
   async findOneById(id: number): Promise<Meeting> {
-    return this.meetingsRepository.findOne({
+    const meeting: Meeting = await this.meetingsRepository.findOne({
       where: {
         id,
       },
     });
+
+    if (!meeting) {
+      throw new HttpException('Meeting not found!', HttpStatus.BAD_REQUEST);
+    }
+
+    return meeting;
   }
 
   async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
     const user: User = await this.userService.findOneById(userId);
-
-    if (!user) {
-      throw new HttpException(
-        'The user does not exist',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
 
     const newMeeting: Meeting = this.meetingsRepository.create({
       title: meeting.title,
@@ -47,5 +45,15 @@ export class MeetingService {
     });
 
     return this.meetingsRepository.save(newMeeting);
+  }
+
+  //TODO: Can only delete the meetings you created
+  async deleteOne(meetingId: number): Promise<Meeting> {
+    const meetingToDelete: Meeting = await this.findOneById(meetingId);
+    const meeting: Meeting = await this.meetingsRepository.remove(
+      meetingToDelete,
+    );
+
+    return meeting;
   }
 }

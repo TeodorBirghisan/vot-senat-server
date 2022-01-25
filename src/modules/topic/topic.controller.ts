@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -35,5 +36,17 @@ export class TopicsController {
     meetingId: number,
   ): Promise<Topic[]> {
     return this.topicService.getAllTopicsInMeeting(meetingId);
+  }
+
+  @Delete('/:meetingId')
+  deleteTopicInMeeting(
+    @Param(
+      'meetingId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    meetingId: number,
+    @Body('topicId') topicId: number,
+  ): Promise<Topic> {
+    return this.topicService.deleteTopicInMeeting(meetingId, topicId);
   }
 }
