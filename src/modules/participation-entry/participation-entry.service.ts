@@ -64,7 +64,7 @@ export class ParticipationEntryService {
           joinTimestamp: timeToJoin,
           meeting: meetingToJoin,
           user: userToJoin,
-          exitTimestamp: timeToJoin,
+          exitTimestamp: null,
         });
       return await this.participationEntryRepository.save(participationEntry);
     }

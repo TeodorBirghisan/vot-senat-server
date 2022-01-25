@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
+import { ParticipationEntry } from './partitcipation-entry.entity';
 
 @Controller('/participation')
 export class ParticipationEntryController {
@@ -23,7 +24,7 @@ export class ParticipationEntryController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     userId: number,
-  ) {
+  ): Promise<ParticipationEntry> {
     return this.participationEntryService.joinMeeting(meetingId, userId);
   }
 }

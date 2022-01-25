@@ -26,6 +26,8 @@ export class ParticipationEntry {
   @Column()
   joinTimestamp: Date;
 
-  @Column()
-  exitTimestamp: Date;
+  @Column({
+    nullable: true,
+  })
+  exitTimestamp: Date | null;
 }
