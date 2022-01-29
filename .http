@@ -156,7 +156,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/participation/joinMeeting/20/8
+POST http://localhost:3000/participation/joinMeeting/35/8
 
 ###
 DELETE http://localhost:3000/meetings/28
@@ -168,3 +168,10 @@ Content-Type: application/json
 {
     "topicId": "9"
 }
+
+###
+PUT http://localhost:3000/participation/exitMeeting/35/9
+
+
+###
+GET http://localhost:3000/participation/allUsers/35
