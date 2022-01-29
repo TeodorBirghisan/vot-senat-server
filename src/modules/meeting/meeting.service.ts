@@ -33,6 +33,14 @@ export class MeetingService {
     return meeting;
   }
 
+  async udpateStatus(id: number, newStatus: string): Promise<void> {
+    const meetingToUpdate: Meeting = await this.findOneById(id);
+
+    meetingToUpdate.status = newStatus;
+
+    await this.meetingsRepository.save(meetingToUpdate);
+  }
+
   async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
     const user: User = await this.userService.findOneById(userId);
 
