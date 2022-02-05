@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Vote } from './vote.entity';
 import { Topic } from '../topic/topic.entity';
 import { User } from '../user/user.entity';
+import console from 'console';
 
 @Injectable()
 export class VoteService {
@@ -15,6 +16,21 @@ export class VoteService {
     private topicService: TopicService,
     private userService: UserService,
   ) {}
+
+  async findOneByIds(topicId: number, userId: number): Promise<Vote> {
+    return this.voteRepository.findOne({
+      where: {
+        topic: topicId,
+        user: userId,
+      },
+    });
+  }
+
+  async findAllByUser(userId: number): Promise<Vote[]> {
+    return this.voteRepository.find({
+      where: { user: userId },
+    });
+  }
 
   async saveVote(
     topicId: number,
@@ -42,12 +58,21 @@ export class VoteService {
     return this.voteRepository.save(newVote);
   }
 
-  async findOneByIds(topicId: number, userId: number): Promise<Vote> {
-    return this.voteRepository.findOne({
-      where: {
-        topic: topicId,
-        user: userId,
-      },
-    });
+  async getVote(topicId: number, userId: number): Promise<Vote | Vote[]> {
+    if (!topicId) {
+      const votes: Vote[] = await this.findAllByUser(userId);
+      return votes;
+    } else {
+      const vote: Vote = await this.findOneByIds(topicId, userId);
+
+      if (!vote) {
+        throw new HttpException(
+          'No vote found for this topic',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      return vote;
+    }
   }
 }
