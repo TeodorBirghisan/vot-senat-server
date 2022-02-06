@@ -140,19 +140,19 @@ POST http://localhost:3000/topics/35
 Content-Type: application/json
 
 {
-    "content": "topic 3"
+    "content": "topic vot test"
 }
 
 ###
-GET http://localhost:3000/topics/27
+GET http://localhost:3000/topics/35
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/vote/20/10
+POST http://localhost:3000/vote/22/11
 Content-Type: application/json
 
 {
-    "voteValue": "YES"
+    "voteValue": "NoneSense"
 }
 
 ###
@@ -185,3 +185,7 @@ Content-Type: application/json
 {
     "topicId": "20"
 }
+
+###
+
+GET http://localhost:3000/vote/result/22

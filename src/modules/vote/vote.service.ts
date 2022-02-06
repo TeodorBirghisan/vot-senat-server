@@ -1,3 +1,8 @@
+import {
+  VOTE_VALUE_ABTAIN,
+  VOTE_VALUE_YES,
+  VOTE_VALUE_NO,
+} from './../../core/constants/index';
 import { UserService } from './../user/user.service';
 import { TopicService } from './../topic/topic.service';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
@@ -6,7 +11,6 @@ import { Repository } from 'typeorm';
 import { Vote } from './vote.entity';
 import { Topic } from '../topic/topic.entity';
 import { User } from '../user/user.entity';
-import console from 'console';
 
 @Injectable()
 export class VoteService {
@@ -29,6 +33,12 @@ export class VoteService {
   async findAllByUser(userId: number): Promise<Vote[]> {
     return this.voteRepository.find({
       where: { user: userId },
+    });
+  }
+
+  async findAllByTopic(topicId: number): Promise<Vote[]> {
+    return this.voteRepository.find({
+      where: { topic: topicId },
     });
   }
 
@@ -74,5 +84,46 @@ export class VoteService {
 
       return vote;
     }
+  }
+
+  //TODO: create type vote Values to check the validity of vote
+  async getVoteCount(topicId: number): Promise<Map<string, number>> {
+    const validVotes: string[] = [
+      VOTE_VALUE_YES,
+      VOTE_VALUE_NO,
+      VOTE_VALUE_ABTAIN,
+    ];
+
+    const voteCount: Map<string, number> = new Map<string, number>();
+
+    for (const vote in validVotes) {
+      const count: [Vote[], number] = await this.voteRepository.findAndCount({
+        where: { topic: topicId, value: validVotes[vote] },
+      });
+      const key = validVotes[vote];
+      voteCount[key] = count[1];
+    }
+
+    return voteCount;
+  }
+
+  async getResult(topicId: number): Promise<Record<string, string>> {
+    const voteCount: Map<string, number> = await this.getVoteCount(topicId);
+
+    let maxVoteCount = 0;
+    let majorityVote = '';
+
+    for (const [voteValue, count] of Object.entries(voteCount)) {
+      if (count > maxVoteCount) {
+        maxVoteCount = count;
+        majorityVote = voteValue;
+      } else if (count == maxVoteCount) {
+        majorityVote = 'EQUAL';
+      }
+    }
+
+    const result: Record<string, string> = { vote: majorityVote };
+
+    return result;
   }
 }
