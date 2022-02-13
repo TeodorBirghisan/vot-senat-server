@@ -46,7 +46,7 @@ export class MeetingsController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     meetingId: number,
-  ): Promise<Meeting> {
+  ): Promise<number> {
     return this.meetingService.deleteOne(meetingId);
   }
 }

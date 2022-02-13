@@ -56,12 +56,17 @@ export class MeetingService {
   }
 
   //TODO: Can only delete the meetings you created
-  async deleteOne(meetingId: number): Promise<Meeting> {
+  async deleteOne(meetingId: number): Promise<number> {
     const meetingToDelete: Meeting = await this.findOneById(meetingId);
-    const meeting: Meeting = await this.meetingsRepository.remove(
+
+    const deletedMeeting: Meeting = await this.meetingsRepository.remove(
       meetingToDelete,
     );
 
-    return meeting;
+    if (!deletedMeeting) {
+      throw new HttpException('Cannot delete!', HttpStatus.BAD_REQUEST);
+    }
+
+    return meetingId;
   }
 }
