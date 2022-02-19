@@ -46,7 +46,7 @@ export class TopicsController {
     )
     meetingId: number,
     @Body('topicId') topicId: number,
-  ): Promise<Topic> {
+  ): Promise<number> {
     return this.topicService.deleteTopicInMeeting(meetingId, topicId);
   }
 }

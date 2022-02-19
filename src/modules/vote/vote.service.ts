@@ -108,6 +108,8 @@ export class VoteService {
   }
 
   async getResult(topicId: number): Promise<Record<string, string>> {
+    await this.topicService.findOneById(topicId);
+
     const voteCount: Map<string, number> = await this.getVoteCount(topicId);
 
     let maxVoteCount = 0;
