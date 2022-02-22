@@ -12,10 +12,8 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "birghisanteodor@yahoo.com",
-    "password": "123",
-    "firstName": "Teodor",
-    "lastName": "Birghisan"
+    "email": "a",
+    "password": "123"
 }
 
 ###
@@ -175,3 +173,27 @@ PUT http://localhost:3000/participation/exitMeeting/35/9
 
 ###
 GET http://localhost:3000/participation/allUsers/35
+
+
+###
+POST http://localhost:3000/auth-jwt/login
+Content-Type: application/json
+
+{
+    "email": "a@yahoo.com",
+    "password": "123"
+}
+
+
+###
+POST http://localhost:3000/auth-jwt/register
+Content-Type: application/json
+
+{
+    "email": "a@yahoo.com",
+    "password": "123"
+}
+
+###
+GET http://localhost:3000/auth-jwt/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTUzNzkyMywiZXhwIjoxNjQ1NTM3OTgzfQ.g6w_EghNl3787nuKDCZ9iHSfB8KRgd47IjnjMp3pCJ8
