@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
 import { CreateUserDto, LoginUserDto, UserDto } from '../user/user.dto';
 import { JwtPayload } from './jwt.strategy';
-import { jwtConstants } from './constants';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthJwtService {
@@ -12,38 +12,6 @@ export class AuthJwtService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
-
-  // async validateUser(email: string, pass: string): Promise<any> {
-  //   const user: User = await this.userService.findOneByEmail(email);
-  //   if (user && user.password == pass) {
-  //     const { password, email } = user;
-  //     return email;
-  //   }
-  //   return null;
-  // }
-
-  // async login(email: string, pass: string) {
-  //   const user: User | null = await this.userService.findOneByEmail(email);
-
-  //   if (!user) {
-  //     throw new HttpException(
-  //       "You don't have an account with this email",
-  //       HttpStatus.NOT_FOUND,
-  //     );
-  //   }
-
-  //   if (user.password !== pass) {
-  //     throw new HttpException(
-  //       'Email or password is incorrect',
-  //       HttpStatus.NOT_FOUND,
-  //     );
-  //   }
-
-  //   const payload = { email: user.email, sub: user.id };
-  //   return {
-  //     access_token: this.jwtService.sign(payload),
-  //   };
-  // }
 
   async register(userDto: CreateUserDto): Promise<User> {
     const user: User = await this.userService.saveOne(userDto);
@@ -56,13 +24,14 @@ export class AuthJwtService {
       loginUserDto.email,
     );
 
-    //TODO: validate password
-
     if (!user) {
-      throw new HttpException(
-        "You don't have an account with this email",
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+    }
+
+    const areEqual = await bcrypt.compare(loginUserDto.password, user.password);
+
+    if (!areEqual) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
     const token = this._createToken(user);
