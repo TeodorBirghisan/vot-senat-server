@@ -1,4 +1,3 @@
-import { jwtConstants } from './constants';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -16,8 +15,8 @@ import { AuthJWTController } from './auth.controller';
       session: false,
     }),
     JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      secret: process.env.jwtSecret,
+      signOptions: { expiresIn: process.env.expiresIn },
     }),
   ],
   controllers: [AuthJWTController],
