@@ -14,6 +14,7 @@ import { UserRoleService } from './modules/user-role/user-role.service';
 import { VoteModule } from './modules/vote/vote.module';
 import { MailModule } from './modules/mail/mail.module';
 import { ParticipationEntryModule } from './modules/participation-entry/participation-entry.module';
+import { AuthJwtModule } from './modules/auth-jwt/auth-jwt.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ParticipationEntryModule } from './modules/participation-entry/particip
     VoteModule,
     MailModule,
     ParticipationEntryModule,
+    AuthJwtModule,
   ],
   controllers: [AppController],
   providers: [AppService],
