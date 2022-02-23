@@ -7,11 +7,14 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ParticipationEntry } from './partitcipation-entry.entity';
 import { User } from '../user/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/participation')
+@UseGuards(AuthGuard())
 export class ParticipationEntryController {
   constructor(private participationEntryService: ParticipationEntryService) {}
 

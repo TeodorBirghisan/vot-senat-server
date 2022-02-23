@@ -7,13 +7,16 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { MeetingDTO } from './meeting.dto';
 
 import { Meeting } from './meeting.entity';
 import { MeetingService } from './meeting.service';
 
 @Controller('/meetings')
+@UseGuards(AuthGuard())
 export class MeetingsController {
   constructor(private meetingService: MeetingService) {}
 

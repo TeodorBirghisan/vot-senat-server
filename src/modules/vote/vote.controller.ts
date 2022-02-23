@@ -1,8 +1,10 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Vote } from './vote.entity';
 import { VoteService } from './vote.service';
 
 @Controller('/vote')
+@UseGuards(AuthGuard())
 export class VoteController {
   constructor(private voteService: VoteService) {}
 

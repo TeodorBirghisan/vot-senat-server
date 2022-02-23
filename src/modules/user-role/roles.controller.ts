@@ -7,14 +7,14 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { UserRolesEnum } from './user-role.entity';
 import { UserRoleService } from './user-role.service';
 
 @Controller('/roles')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard())
 export class RolesController {
   constructor(
     private userRoleService: UserRoleService,
