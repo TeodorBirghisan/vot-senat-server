@@ -98,7 +98,7 @@ Authorization: Bearer inej2rko
 
 POST http://localhost:3000/invitation/
 Content-Type: application/json
-Authorization: Bearer t3zcf5iq
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTY5MzA0NiwiZXhwIjoxNjQ1Nzc5NDQ2fQ.2X741FprgpHpGlTrxcgWWCnURbV1h6HgErmMMeWX_Hg
 
 {
     "email": "birghisanteodor@yahoo.com"
@@ -122,10 +122,11 @@ Authorization: lbo6y9lc
 
 GET http://localhost:3000/meetings
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4
 ###
-POST http://localhost:3000/meetings/10
+POST http://localhost:3000/meetings
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4
 
 {
     "title": "test title",
@@ -157,8 +158,8 @@ Content-Type: application/json
 POST http://localhost:3000/participation/joinMeeting/35/8
 
 ###
-DELETE http://localhost:3000/meetings/28
-
+DELETE http://localhost:3000/meetings/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4
 ###
 DELETE http://localhost:3000/topics/28
 Content-Type: application/json
@@ -196,4 +197,4 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/auth-jwt/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTUzNzkyMywiZXhwIjoxNjQ1NTM3OTgzfQ.g6w_EghNl3787nuKDCZ9iHSfB8KRgd47IjnjMp3pCJ8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4

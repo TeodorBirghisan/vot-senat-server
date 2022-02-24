@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -25,21 +26,12 @@ export class MeetingsController {
     return this.meetingService.getAll();
   }
 
-  //TODO: Organizer = user making the req. For now userId will replace that
-  @Post('/:userId')
+  @Post()
   createMeeting(
-    @Param(
-      'userId',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
-    )
-    userId: number,
     @Body() meeting: MeetingDTO,
+    @Req() req: any,
   ): Promise<Meeting> {
-    if (!meeting.description) {
-      meeting.description = 'No description provided';
-    }
-
-    return this.meetingService.saveOne(userId, meeting);
+    return this.meetingService.saveOne(req, meeting);
   }
 
   @Delete('/:meetingId')
@@ -49,7 +41,8 @@ export class MeetingsController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     meetingId: number,
+    @Req() req: any,
   ): Promise<Meeting> {
-    return this.meetingService.deleteOne(meetingId);
+    return this.meetingService.deleteOne(req, meetingId);
   }
 }
