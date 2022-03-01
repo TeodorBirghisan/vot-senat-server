@@ -37,7 +37,7 @@ export class AuthJwtService {
     const token = this._createToken(user);
 
     return {
-      user: user.email,
+      userId: user.id,
       ...token,
     };
   }
@@ -54,6 +54,7 @@ export class AuthJwtService {
     const user: JwtPayload = { id, email };
     const accessToken = this.jwtService.sign(user);
     return {
+      //TODO: remove this when expiresIn is stable
       expiresIn: process.env.expiresIn,
       accessToken,
     };
