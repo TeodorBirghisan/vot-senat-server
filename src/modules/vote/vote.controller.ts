@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Vote } from './vote.entity';
 import { VoteService } from './vote.service';
@@ -8,12 +8,12 @@ import { VoteService } from './vote.service';
 export class VoteController {
   constructor(private voteService: VoteService) {}
 
-  @Post('/:topicId/:userId')
+  @Post('/:topicId')
   vote(
     @Param('topicId') topicId: number,
-    @Param('userId') userId: number,
     @Body('voteValue') voteValue: string,
+    @Req() req: any,
   ): Promise<Vote> {
-    return this.voteService.saveVote(topicId, userId, voteValue);
+    return this.voteService.saveVote(topicId, req, voteValue);
   }
 }
