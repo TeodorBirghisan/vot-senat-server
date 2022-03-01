@@ -135,23 +135,23 @@ Authorization: Bearer
 }
 
 ###
-POST http://localhost:3000/topics/28
+POST http://localhost:3000/topics/35
 Content-Type: application/json
 
 {
-    "content": "test topic 3"
+    "content": "topic vot test"
 }
 
 ###
-GET http://localhost:3000/topics/27
+GET http://localhost:3000/topics/35
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/vote/1/1
+POST http://localhost:3000/vote/22/11
 Content-Type: application/json
 
 {
-    "voteValue": "YES"
+    "voteValue": "NoneSense"
 }
 
 ###
@@ -175,6 +175,17 @@ PUT http://localhost:3000/participation/exitMeeting/35/9
 ###
 GET http://localhost:3000/participation/allUsers/35
 
+
+###
+GET http://localhost:3000/vote/10
+Content-Type: application/json
+
+{
+    "topicId": "20"
+}
+
+###
+GET http://localhost:3000/vote/result/22
 
 ###
 POST http://localhost:3000/auth-jwt/login
@@ -209,3 +220,4 @@ invitationToken: eztnw00l
     "email": "b@yahoo.com",
     "password": "123"
 }
+

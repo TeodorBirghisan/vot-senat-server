@@ -78,13 +78,20 @@ export class TopicService {
   async deleteTopicInMeeting(
     meetingId: number,
     topicId: number,
-  ): Promise<Topic> {
+  ): Promise<number> {
     const topicToDelete: Topic = await this.findOneByMeeting(
       meetingId,
       topicId,
     );
 
-    const deleted: Topic = await this.topicRepository.remove(topicToDelete);
-    return deleted;
+    const deletedTopic: Topic = await this.topicRepository.remove(
+      topicToDelete,
+    );
+
+    if (!deletedTopic) {
+      throw new HttpException('Cannot delete topic!', HttpStatus.BAD_REQUEST);
+    }
+
+    return topicId;
   }
 }
