@@ -72,7 +72,7 @@ export class AuthController {
     token?: string;
   }> {
     //TODO bcrypt the password so that it is not visible in the database
-    await this.userService.saveOne(firstName, lastName, email, password);
+    await this.userService.saveOne({ firstName, lastName, email, password });
     return {
       message: 'User created successfully',
     };
@@ -96,12 +96,12 @@ export class AuthController {
     //TODO bcrypt the password so that it is not visible in the database
     const invitationToken: string = request.headers['authorization'];
 
-    const user: User = await this.userService.saveOne(
+    const user: User = await this.userService.saveOne({
       firstName,
       lastName,
       email,
       password,
-    );
+    });
 
     if (!user) {
       throw new HttpException('Could not create user', HttpStatus.CONFLICT);

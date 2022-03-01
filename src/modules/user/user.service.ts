@@ -1,6 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUserDto, UserDto } from './user.dto';
 import { User } from './user.entity';
 
 @Injectable()
@@ -23,13 +24,6 @@ export class UserService {
       },
     });
 
-    if (!user) {
-      throw new HttpException(
-        'The user with this email does not exist',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
     return user;
   }
 
@@ -50,14 +44,12 @@ export class UserService {
     return user;
   }
 
-  //TODO complete the data for the user
-  async saveOne(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-  ): Promise<User> {
-    const user: User = await this.findOneByEmail(email);
+  async findByPayload({ email }: any): Promise<UserDto> {
+    return await this.usersRepository.findOne({ where: { email } });
+  }
+
+  async saveOne(userCreateDto: CreateUserDto): Promise<User> {
+    const user: User = await this.findOneByEmail(userCreateDto.email);
 
     if (user) {
       throw new HttpException(
@@ -66,12 +58,7 @@ export class UserService {
       );
     }
 
-    const newUser: User = this.usersRepository.create({
-      email,
-      password,
-      firstName,
-      lastName,
-    });
+    const newUser: User = this.usersRepository.create(userCreateDto);
 
     return await this.usersRepository.save(newUser);
   }

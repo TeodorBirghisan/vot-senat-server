@@ -5,17 +5,15 @@ Content-Type: application/json
 
 GET http://localhost:3000/
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 ###
 POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "birghisanteodor@yahoo.com",
-    "password": "123",
-    "firstName": "Teodor",
-    "lastName": "Birghisan"
+    "email": "a",
+    "password": "123"
 }
 
 ###
@@ -32,7 +30,7 @@ Content-Type: application/json
 
 PUT http://localhost:3000/roles/user/grant
 Content-Type: application/json
-Authorization: Bearer t3zcf5iq
+Authorization: Bearer 
 
 {
     "userId": 8,
@@ -63,7 +61,7 @@ Content-Type: application/json
 
 PUT http://localhost:3000/roles/user/grant
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 {
     "userId": 2,
@@ -74,36 +72,36 @@ Authorization: Bearer inej2rko
 
 GET http://localhost:3000/x
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 
 ###
 
 GET http://localhost:3000/y
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 
 ###
 
 GET http://localhost:3000/z
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 ###
 
 GET http://localhost:3000/xy
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 ###
 
 POST http://localhost:3000/invitation/
 Content-Type: application/json
-Authorization: Bearer t3zcf5iq
+Authorization: Bearer 
 
 {
-    "email": "birghisanteodor@yahoo.com"
+    "email": "a@yahoo.com"
 }
 
 ###
@@ -111,7 +109,7 @@ Authorization: Bearer t3zcf5iq
 
 POST http://localhost:3000/auth/invitation/signup
 Content-Type: application/json
-Authorization: lbo6y9lc
+Authorization:
 
 {
     "email": "invited@senat.com",
@@ -124,10 +122,11 @@ Authorization: lbo6y9lc
 
 GET http://localhost:3000/meetings
 Content-Type: application/json
-
+Authorization: Bearer 
 ###
-POST http://localhost:3000/meetings/10
+POST http://localhost:3000/meetings
 Content-Type: application/json
+Authorization: Bearer 
 
 {
     "title": "test title",
@@ -159,8 +158,8 @@ Content-Type: application/json
 POST http://localhost:3000/participation/joinMeeting/35/8
 
 ###
-DELETE http://localhost:3000/meetings/28
-
+DELETE http://localhost:3000/meetings/2
+Authorization: Bearer 
 ###
 DELETE http://localhost:3000/topics/28
 Content-Type: application/json
@@ -178,7 +177,6 @@ GET http://localhost:3000/participation/allUsers/35
 
 
 ###
-
 GET http://localhost:3000/vote/10
 Content-Type: application/json
 
@@ -187,5 +185,39 @@ Content-Type: application/json
 }
 
 ###
-
 GET http://localhost:3000/vote/result/22
+
+###
+POST http://localhost:3000/auth-jwt/login
+Content-Type: application/json
+
+{
+    "email": "a@yahoo.com",
+    "password": "123"
+}
+
+
+###
+POST http://localhost:3000/auth-jwt/register
+Content-Type: application/json
+
+{
+    "email": "a@yahoo.com",
+    "password": "123"
+}
+
+###
+GET http://localhost:3000/auth-jwt/profile
+Authorization: Bearer 
+
+###
+POST http://localhost:3000/auth-jwt/invitation/register
+Content-Type: application/json
+Authorization: Bearer
+invitationToken: eztnw00l
+
+{
+    "email": "b@yahoo.com",
+    "password": "123"
+}
+

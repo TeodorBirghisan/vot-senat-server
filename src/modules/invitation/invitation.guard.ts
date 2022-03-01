@@ -15,11 +15,11 @@ export class InvitationGuard implements CanActivate {
 
   async validateRequest(request: any): Promise<boolean> {
     // Here authorization represents the invitationToken not any login token
-    if (!request.headers.authorization) {
+    if (!request.headers.invitationtoken) {
       return false;
     }
 
-    const invitationToken: string | null = request.headers.authorization;
+    const invitationToken: string | null = request.headers.invitationtoken;
 
     if (!invitationToken) {
       return false;

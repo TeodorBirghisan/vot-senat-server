@@ -40,15 +40,12 @@ export class ParticipationEntryService {
     return usersCount;
   }
 
-  async joinMeeting(
-    meetingId: number,
-    userId: number,
-  ): Promise<ParticipationEntry> {
+  async joinMeeting(meetingId: number, req: any): Promise<ParticipationEntry> {
     const meetingToJoin: Meeting = await this.meetingService.findOneById(
       meetingId,
     );
 
-    const userToJoin: User = await this.userService.findOneById(userId);
+    const userToJoin: User = await this.userService.findOneById(req.user.id);
 
     const timeToJoin: Date = new Date();
 
@@ -60,7 +57,7 @@ export class ParticipationEntryService {
       );
     } else {
       const alreadyJoined: ParticipationEntry =
-        await this.findOneByMeetingAndUser(meetingId, userId);
+        await this.findOneByMeetingAndUser(meetingId, req.user.id);
       if (alreadyJoined) {
         throw new HttpException(
           'You already joined this meeting',
@@ -83,14 +80,11 @@ export class ParticipationEntryService {
     }
   }
 
-  async exitMeeting(
-    meetingId: number,
-    userId: number,
-  ): Promise<ParticipationEntry> {
+  async exitMeeting(meetingId: number, req: any): Promise<ParticipationEntry> {
     const timeToExit: Date = new Date();
 
     const participationEntry: ParticipationEntry =
-      await this.findOneByMeetingAndUser(meetingId, userId);
+      await this.findOneByMeetingAndUser(meetingId, req.user.id);
 
     if (!participationEntry) {
       throw new HttpException(

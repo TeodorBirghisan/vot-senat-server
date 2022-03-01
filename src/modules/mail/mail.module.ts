@@ -3,6 +3,10 @@ import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 @Module({
   imports: [
     MailerModule.forRoot({
@@ -14,9 +18,10 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
           user: process.env.EMAIL_ADDRESS,
           pass: process.env.EMAIL_PASS,
         },
+        logger: true,
       },
       defaults: {
-        from: '"No Reply" <no-reply@localhost>',
+        from: process.env.EMAIL_ADDRESS,
       },
       template: {
         dir: __dirname + '/templates',

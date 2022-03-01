@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   JoinTable,
@@ -10,6 +11,7 @@ import { Meeting } from '../meeting/meeting.entity';
 import { ParticipationEntry } from '../participation-entry/partitcipation-entry.entity';
 import { UserRole } from '../user-role/user-role.entity';
 import { Vote } from '../vote/vote.entity';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
@@ -24,6 +26,9 @@ export class User {
 
   @Column()
   email: string;
+  @BeforeInsert() async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 
   @Column()
   password: string;

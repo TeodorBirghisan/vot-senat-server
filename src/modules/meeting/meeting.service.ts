@@ -33,6 +33,21 @@ export class MeetingService {
     return meeting;
   }
 
+  async findOneByIdWithUser(id: number): Promise<Meeting> {
+    const meeting: Meeting = await this.meetingsRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['organizer'],
+    });
+
+    if (!meeting) {
+      throw new HttpException('Meeting not found!', HttpStatus.BAD_REQUEST);
+    }
+
+    return meeting;
+  }
+
   async udpateStatus(id: number, newStatus: string): Promise<void> {
     const meetingToUpdate: Meeting = await this.findOneById(id);
 
@@ -41,25 +56,51 @@ export class MeetingService {
     await this.meetingsRepository.save(meetingToUpdate);
   }
 
-  async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
-    const user: User = await this.userService.findOneById(userId);
+  async saveOne(req: any, meeting: MeetingDTO): Promise<Meeting> {
+    if (!meeting) {
+      throw new HttpException(
+        'Meeting cannot be empty',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (!meeting.description) {
+      meeting.description = 'No description provided';
+    }
+
+    const organizer: User = await this.userService.findOneById(req.user.id);
+
+    if (!req.user || !organizer) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
 
     const newMeeting: Meeting = this.meetingsRepository.create({
       title: meeting.title,
       startDate: meeting.startDate,
       status: MEETING_STATUS_TO_BE_DISSCUSSED,
-      organizer: user,
+      organizer: organizer,
       description: meeting.description,
     });
 
     return this.meetingsRepository.save(newMeeting);
   }
 
-  //TODO: Can only delete the meetings you created
-  async deleteOne(meetingId: number): Promise<number> {
-    const meetingToDelete: Meeting = await this.findOneById(meetingId);
 
-    const deletedMeeting: Meeting = await this.meetingsRepository.remove(
+  async deleteOne(req: any, meetingId: number): Promise<Meeting> {
+    if (!req.user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+
+    const meetingToDelete: Meeting = await this.findOneByIdWithUser(meetingId);
+
+    if (req.user.email != meetingToDelete.organizer.email) {
+      throw new HttpException(
+        'Cannot delete meetings you did not create',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const meeting: Meeting = await this.meetingsRepository.remove(
       meetingToDelete,
     );
 
