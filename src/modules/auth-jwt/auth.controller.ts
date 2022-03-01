@@ -29,32 +29,32 @@ export class AuthJWTController {
     return result;
   }
 
-  // @Post('invitation/register')
-  // @UseGuards(InvitationGuard)
-  // async registerWithInvitation(
-  //   @Req() request: Request,
-  //   @Body() createUserDto: CreateUserDto,
-  // ): Promise<any> {
-  //   const invitationToken: string = request.headers['authorization'];
+  @Post('invitation/register')
+  @UseGuards(InvitationGuard)
+  async registerWithInvitation(
+    @Req() request: Request,
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<any> {
+    const invitationToken: string = request.headers['authorization'];
 
-  //   const result = await this.authService.register(createUserDto);
+    const result = await this.authService.register(createUserDto);
 
-  //   //TBD instead of deletion, the invitation should be invalidated, instead of deleted
-  //   const deleteionSuccessfull =
-  //     await this.invitationService.deleteInvitationByToken(invitationToken);
+    //TBD instead of deletion, the invitation should be invalidated, instead of deleted
+    const deleteionSuccessfull =
+      await this.invitationService.deleteInvitationByToken(invitationToken);
 
-  //   if (!deleteionSuccessfull) {
-  //     //TODO rollback user creation
-  //     throw new HttpException(
-  //       'Error deleting deleting the invitation',
-  //       HttpStatus.CONFLICT,
-  //     );
-  //   }
+    if (!deleteionSuccessfull) {
+      //TODO: rollback user creation
+      throw new HttpException(
+        'Error deleting deleting the invitation',
+        HttpStatus.CONFLICT,
+      );
+    }
 
-  //   return {
-  //     message: 'User created successfully',
-  //   };
-  // }
+    return {
+      message: 'User created successfully',
+    };
+  }
 
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto): Promise<any> {
