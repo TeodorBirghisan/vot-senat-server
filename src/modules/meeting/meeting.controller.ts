@@ -42,7 +42,7 @@ export class MeetingsController {
     )
     meetingId: number,
     @Req() req: any,
-  ): Promise<Meeting> {
+  ): Promise<number> {
     return this.meetingService.deleteOne(req, meetingId);
   }
 }

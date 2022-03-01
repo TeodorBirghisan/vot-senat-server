@@ -85,7 +85,7 @@ export class MeetingService {
     return this.meetingsRepository.save(newMeeting);
   }
 
-  async deleteOne(req: any, meetingId: number): Promise<Meeting> {
+  async deleteOne(req: any, meetingId: number): Promise<number> {
     if (!req.user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
@@ -99,7 +99,7 @@ export class MeetingService {
       );
     }
 
-    const meeting: Meeting = await this.meetingsRepository.remove(
+    const deletedMeeting: Meeting = await this.meetingsRepository.remove(
       meetingToDelete,
     );
 
