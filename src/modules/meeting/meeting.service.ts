@@ -85,7 +85,6 @@ export class MeetingService {
     return this.meetingsRepository.save(newMeeting);
   }
 
-
   async deleteOne(req: any, meetingId: number): Promise<Meeting> {
     if (!req.user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);

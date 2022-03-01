@@ -7,7 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Req,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Vote } from './vote.entity';
