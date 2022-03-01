@@ -16,19 +16,15 @@ export class VoteService {
     private userService: UserService,
   ) {}
 
-  async saveVote(
-    topicId: number,
-    userId: number,
-    voteValue: string,
-  ): Promise<Vote> {
-    const vote: Vote = await this.findOneByIds(topicId, userId);
+  async saveVote(topicId: number, req: any, voteValue: string): Promise<Vote> {
+    const vote: Vote = await this.findOneByIds(topicId, req.user.id);
 
     if (vote) {
       throw new HttpException('You already voted!', HttpStatus.BAD_REQUEST);
     }
 
     const topic: Topic = await this.topicService.findOneById(topicId);
-    const user: User = await this.userService.findOneById(userId);
+    const user: User = await this.userService.findOneById(req.user.id);
 
     const now = new Date();
 

@@ -5,6 +5,7 @@ import { UserModule } from '../user/user.module';
 import { AuthJwtService } from './auth-jwt.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthJWTController } from './auth.controller';
+import { InvitationModule } from '../invitation/invitation.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthJWTController } from './auth.controller';
       secret: process.env.jwtSecret,
       signOptions: { expiresIn: process.env.expiresIn },
     }),
+    InvitationModule,
   ],
   controllers: [AuthJWTController],
   providers: [AuthJwtService, JwtStrategy],

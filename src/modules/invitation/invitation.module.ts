@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailModule } from '../mail/mail.module';
 import { SecurityModule } from '../security/security.module';
@@ -9,7 +10,14 @@ import { InvitationGuard } from './invitation.guard';
 import { InvitationService } from './invitation.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Invitation]), SecurityModule, MailModule],
+  imports: [
+    TypeOrmModule.forFeature([Invitation]),
+    SecurityModule,
+    MailModule,
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
+  ],
   providers: [InvitationService, InvitationGuard],
   controllers: [InvitationController],
   exports: [InvitationGuard, InvitationService],

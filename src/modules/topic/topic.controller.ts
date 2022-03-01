@@ -7,11 +7,14 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Topic } from './topic.entity';
 import { TopicService } from './topic.service';
 
 @Controller('/topics')
+@UseGuards(AuthGuard())
 export class TopicsController {
   constructor(private topicService: TopicService) {}
 
