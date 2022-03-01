@@ -5,7 +5,7 @@ Content-Type: application/json
 
 GET http://localhost:3000/
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 ###
 POST http://localhost:3000/auth/signup
@@ -30,7 +30,7 @@ Content-Type: application/json
 
 PUT http://localhost:3000/roles/user/grant
 Content-Type: application/json
-Authorization: Bearer t3zcf5iq
+Authorization: Bearer 
 
 {
     "userId": 8,
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 PUT http://localhost:3000/roles/user/grant
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 {
     "userId": 2,
@@ -72,36 +72,36 @@ Authorization: Bearer inej2rko
 
 GET http://localhost:3000/x
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 
 ###
 
 GET http://localhost:3000/y
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 
 ###
 
 GET http://localhost:3000/z
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 ###
 
 GET http://localhost:3000/xy
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 ###
 
 POST http://localhost:3000/invitation/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTY5MzA0NiwiZXhwIjoxNjQ1Nzc5NDQ2fQ.2X741FprgpHpGlTrxcgWWCnURbV1h6HgErmMMeWX_Hg
+Authorization: Bearer 
 
 {
-    "email": "birghisanteodor@yahoo.com"
+    "email": "a@yahoo.com"
 }
 
 ###
@@ -109,7 +109,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiO
 
 POST http://localhost:3000/auth/invitation/signup
 Content-Type: application/json
-Authorization: lbo6y9lc
+Authorization:
 
 {
     "email": "invited@senat.com",
@@ -122,11 +122,11 @@ Authorization: lbo6y9lc
 
 GET http://localhost:3000/meetings
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4
+Authorization: Bearer 
 ###
 POST http://localhost:3000/meetings
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4
+Authorization: Bearer 
 
 {
     "title": "test title",
@@ -159,7 +159,7 @@ POST http://localhost:3000/participation/joinMeeting/35/8
 
 ###
 DELETE http://localhost:3000/meetings/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4
+Authorization: Bearer 
 ###
 DELETE http://localhost:3000/topics/28
 Content-Type: application/json
@@ -197,4 +197,15 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/auth-jwt/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0NTcwOTI4NiwiZXhwIjoxNjQ1Nzk1Njg2fQ.Ez7Q5RGzlicYpNUi-4jbCgnIUkKzT-GpBS3vOH1znz4
+Authorization: Bearer 
+
+###
+POST http://localhost:3000/auth-jwt/invitation/register
+Content-Type: application/json
+Authorization: Bearer
+invitationToken: eztnw00l
+
+{
+    "email": "b@yahoo.com",
+    "password": "123"
+}
