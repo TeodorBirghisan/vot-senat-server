@@ -1,3 +1,4 @@
+import { MEETING_STATUS_FINISHED } from './../../core/constants/index';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Topic } from './topic.entity';
@@ -61,6 +62,13 @@ export class TopicService {
 
   async saveTopicToMeeting(meetingId: number, content: string): Promise<Topic> {
     const meeting: Meeting = await this.meetingService.findOneById(meetingId);
+
+    if (meeting.status == MEETING_STATUS_FINISHED) {
+      throw new HttpException(
+        'You cannot add topics to a finished meeting',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     const topic: Topic = this.topicRepository.create({
       content,
