@@ -93,6 +93,13 @@ export class ParticipationEntryService {
       );
     }
 
+    if (participationEntry.exitTimestamp) {
+      throw new HttpException(
+        'You already exited this meeting',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     participationEntry.exitTimestamp = timeToExit;
 
     const usersCount: number = await this.countAllUsersInMeeting(meetingId);
