@@ -26,6 +26,11 @@ export class MeetingsController {
     return this.meetingService.getAll();
   }
 
+  @Get('/finished')
+  getFinishedMeetings(): Promise<Meeting[]> {
+    return this.meetingService.getAllFinished();
+  }
+
   @Post()
   createMeeting(
     @Body() meeting: MeetingDTO,
