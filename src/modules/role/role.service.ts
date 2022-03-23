@@ -57,6 +57,14 @@ export class RoleService {
     return actualRoles;
   }
 
+  async getRolesByIds(rolesIds: number[]): Promise<Role[]> {
+    const roles: Role[] = await this.roleRepository.find({
+      where: { id: In(rolesIds) },
+    });
+
+    return roles;
+  }
+
   async checkPermission(
     token: string,
     roles: UserRolesEnum[],

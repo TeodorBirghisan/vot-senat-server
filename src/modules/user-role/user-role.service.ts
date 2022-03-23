@@ -16,8 +16,6 @@ export class UserRoleService {
     private roleService: RoleService,
   ) {}
 
-  //   async getUserRoles(userId: number): Promise<Role[]> {}
-
   async getAllUsersWithSubRoles(req: any) {
     if (!req.user) {
       throw new HttpException('User cannot be found!', HttpStatus.BAD_REQUEST);
@@ -25,7 +23,16 @@ export class UserRoleService {
 
     const userId: number = req.user.id;
 
-    // const roles: Role[] = await this.getUserRoles(userId);
+    return await this.getRolesForUser(userId);
+  }
+
+  async getRolesForUser(userId: number) {
+    const userRoles: UserRole[] = await this.userRoleRepository.find({
+      where: { user: userId },
+      relations: ['role'],
+    });
+    const roles: string[] = userRoles.map((userRole) => userRole.role.name);
+    return roles;
   }
 
   async grantUserRoles(userId: number, roles: UserRolesEnum[]) {
@@ -33,13 +40,11 @@ export class UserRoleService {
     const user: User = await this.userService.findOneById(userId);
     const userRoleEntries = [];
     actualRoles.forEach((role) => {
-      if (role) {
-        const userRole: UserRole = this.userRoleRepository.create({
-          user,
-          role,
-        });
-        userRoleEntries.push(userRole);
-      }
+      const userRole: UserRole = this.userRoleRepository.create({
+        user,
+        role,
+      });
+      userRoleEntries.push(userRole);
     });
 
     await this.userRoleRepository.save(userRoleEntries);
