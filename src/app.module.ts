@@ -9,8 +9,8 @@ import { InvitationModule } from './modules/invitation/invitation.module';
 import { MeetingModule } from './modules/meeting/meeting.module';
 import { UserPermissionModule } from './modules/permission/user-permission.module';
 import { TopicModule } from './modules/topic/topic.module';
-import { UserRoleModule } from './modules/user-role/user-role.module';
-import { UserRoleService } from './modules/user-role/user-role.service';
+import { UserRoleModule } from './modules/role/role.module';
+import { UserRoleService } from './modules/role/role.service';
 import { VoteModule } from './modules/vote/vote.module';
 import { MailModule } from './modules/mail/mail.module';
 import { ParticipationEntryModule } from './modules/participation-entry/participation-entry.module';
@@ -38,6 +38,6 @@ export class AppModule {
     private userRoleService: UserRoleService,
   ) {
     //CREATE OWNER IN SEED
-    //userRoleService.seed();
+    // userRoleService.seed();
   }
 }

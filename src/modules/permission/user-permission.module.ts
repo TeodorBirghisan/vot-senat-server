@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserRoleModule } from '../user-role/user-role.module';
+import { UserRoleModule } from '../role/role.module';
 import { UserPermissionGuard } from './user-permission.guard';
 
 @Module({

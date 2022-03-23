@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Meeting } from '../meeting/meeting.entity';
 import { ParticipationEntry } from '../participation-entry/partitcipation-entry.entity';
-import { UserRole } from '../user-role/user-role.entity';
+import { Role } from '../role/role.entity';
 import { Vote } from '../vote/vote.entity';
 import * as bcrypt from 'bcrypt';
 
@@ -39,9 +39,9 @@ export class User {
   @OneToMany(() => Meeting, (meeting) => meeting.organizer)
   meetings: Meeting[];
 
-  @ManyToMany(() => UserRole)
+  @ManyToMany(() => Role)
   @JoinTable()
-  roles: UserRole[];
+  roles: Role[];
 
   @OneToMany(() => Vote, (vote) => vote.user)
   votes: Vote[];

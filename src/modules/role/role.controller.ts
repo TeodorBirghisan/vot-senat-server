@@ -1,17 +1,19 @@
 import {
   Body,
   Controller,
+  Get,
   HttpException,
   HttpStatus,
   ParseIntPipe,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
-import { UserRolesEnum } from './user-role.entity';
-import { UserRoleService } from './user-role.service';
+import { UserRolesEnum } from './role.entity';
+import { UserRoleService } from './role.service';
 
 @Controller('/roles')
 @UseGuards(AuthGuard())

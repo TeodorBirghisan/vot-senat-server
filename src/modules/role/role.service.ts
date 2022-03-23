@@ -1,25 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { SecurityToken } from '../security/security-token.entity';
 import { User } from '../user/user.entity';
-import { UserRole, UserRolesEnum } from './user-role.entity';
+import { UserService } from '../user/user.service';
+import { Role, UserRolesEnum } from './role.entity';
 
 @Injectable()
 export class UserRoleService {
   constructor(
-    @InjectRepository(UserRole)
-    private userRoleRepository: Repository<UserRole>,
+    @InjectRepository(Role)
+    private userRoleRepository: Repository<Role>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(SecurityToken)
     private securityTokenRepository: Repository<SecurityToken>,
+    private userService: UserService,
   ) {}
 
   //TODO mechaninc that ensures the user roles are added whenever the database is cleaned
   seed() {
     Object.values(UserRolesEnum).map((role) => {
-      const userRole: UserRole = this.userRoleRepository.create({
+      const userRole: Role = this.userRoleRepository.create({
         name: role,
       });
       this.userRoleRepository.save(userRole);
@@ -65,7 +67,7 @@ export class UserRoleService {
 
   async grantRolesToUser(user: User, roles: UserRolesEnum[]) {
     //TODO check if roles is not null/undefined/empty
-    const grantedRoles: UserRole[] = await this.userRoleRepository.find({
+    const grantedRoles: Role[] = await this.userRoleRepository.find({
       where: {
         name: In(roles),
       },
@@ -75,6 +77,5 @@ export class UserRoleService {
 
     this.userRepository.save(user);
   }
-
   //TODO remove role/roles from user
 }

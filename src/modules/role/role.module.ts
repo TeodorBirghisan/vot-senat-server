@@ -5,13 +5,13 @@ import { SecurityToken } from '../security/security-token.entity';
 import { SecurityModule } from '../security/security.module';
 import { User } from '../user/user.entity';
 import { UserModule } from '../user/user.module';
-import { RolesController } from './roles.controller';
-import { UserRole } from './user-role.entity';
-import { UserRoleService } from './user-role.service';
+import { RolesController } from './role.controller';
+import { Role } from './role.entity';
+import { UserRoleService } from './role.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRole, User, SecurityToken]),
+    TypeOrmModule.forFeature([Role, User, SecurityToken]),
     UserModule,
     SecurityModule,
     PassportModule.register({

@@ -1,7 +1,7 @@
 import { MailService } from '../mail/mail.service';
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { UserPermission } from '../permission/user-permission.decorator';
-import { UserRolesEnum } from '../user-role/user-role.entity';
+import { UserRolesEnum } from '../role/role.entity';
 import { Invitation } from './invitation.entity';
 import { InvitationService } from './invitation.service';
 import { AuthGuard } from '@nestjs/passport';
