@@ -28,13 +28,13 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/roles/user/grant
+PUT http://localhost:3000/user-role/grant
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODAzODcxOCwiZXhwIjoxNjQ4MTI1MTE4fQ.i9gQBEEMGynk1aVRLa16q3v-MPgWmsDA9AsIi1sbNvg
 
 {
-    "userId": 8,
-    "roles": ["CAN_CREATE_INVITATION"]
+    "userId": 3,
+    "roles": ["CAN_GRANT_ROLES", "CAN_CREATE_INVITATION", "CAN_DELETE_MEETINGS"]
 }
 
 ###
@@ -221,3 +221,9 @@ invitationToken: eztnw00l
     "password": "123"
 }
 
+###
+GET http://localhost:3000/roles/available/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0Nzk1MjI0MiwiZXhwIjoxNjQ4MDM4NjQyfQ.9Ex-sagJv9BfwVIhYswk1w_UX3J1JfFT9V6o5EfQgCs
+
+###
+GET http://localhost:3000/user-role/available/users

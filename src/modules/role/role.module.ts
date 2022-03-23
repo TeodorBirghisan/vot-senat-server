@@ -7,7 +7,7 @@ import { User } from '../user/user.entity';
 import { UserModule } from '../user/user.module';
 import { RolesController } from './role.controller';
 import { Role } from './role.entity';
-import { UserRoleService } from './role.service';
+import { RoleService } from './role.service';
 
 @Module({
   imports: [
@@ -18,8 +18,8 @@ import { UserRoleService } from './role.service';
       defaultStrategy: 'jwt',
     }),
   ],
-  providers: [UserRoleService],
+  providers: [RoleService],
   controllers: [RolesController],
-  exports: [UserRoleService],
+  exports: [RoleService],
 })
-export class UserRoleModule {}
+export class RoleModule {}

@@ -7,10 +7,10 @@ import { UserService } from '../user/user.service';
 import { Role, UserRolesEnum } from './role.entity';
 
 @Injectable()
-export class UserRoleService {
+export class RoleService {
   constructor(
     @InjectRepository(Role)
-    private userRoleRepository: Repository<Role>,
+    private roleRepository: Repository<Role>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(SecurityToken)
@@ -21,11 +21,40 @@ export class UserRoleService {
   //TODO mechaninc that ensures the user roles are added whenever the database is cleaned
   seed() {
     Object.values(UserRolesEnum).map((role) => {
-      const userRole: Role = this.userRoleRepository.create({
+      const userRole: Role = this.roleRepository.create({
         name: role,
       });
-      this.userRoleRepository.save(userRole);
+      this.roleRepository.save(userRole);
     });
+  }
+
+  async getOneRoleById(id: number): Promise<Role> {
+    const role: Role = await this.roleRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!role) {
+      throw new HttpException(
+        'Cannot find specified role!',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return role;
+  }
+
+  async getValidRoles(roles: UserRolesEnum[]): Promise<Role[]> {
+    //TODO: Check for invalid votes
+    const actualRoles: Role[] = await this.roleRepository.find({
+      where: {
+        name: In(roles),
+      },
+    });
+
+    //TODO: return an array of ids
+    return actualRoles;
   }
 
   async checkPermission(
@@ -57,25 +86,11 @@ export class UserRoleService {
       return false;
     }
 
-    const userRoles = user.roles.map((role) => role.name);
-    const hasPermission = roles.every((requiredRole) =>
-      userRoles.includes(requiredRole),
-    );
+    // const userRoles = user.roles.map((role) => role.name);
+    // const hasPermission = roles.every((requiredRole) =>
+    //   userRoles.includes(requiredRole),
+    // );
 
-    return hasPermission;
+    // return hasPermission;
   }
-
-  async grantRolesToUser(user: User, roles: UserRolesEnum[]) {
-    //TODO check if roles is not null/undefined/empty
-    const grantedRoles: Role[] = await this.userRoleRepository.find({
-      where: {
-        name: In(roles),
-      },
-    });
-
-    user.roles = grantedRoles;
-
-    this.userRepository.save(user);
-  }
-  //TODO remove role/roles from user
 }

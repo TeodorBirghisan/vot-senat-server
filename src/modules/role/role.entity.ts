@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRole } from '../user-role/user-role.entity';
 
 export enum UserRolesEnum {
   CAN_GRANT_ROLES = 'CAN_GRANT_ROLES',
@@ -16,4 +17,7 @@ export class Role {
 
   @Column({ type: 'varchar' })
   name: UserRolesEnum;
+
+  @OneToMany(() => UserRole, (userRole) => userRole.role)
+  userRoles: UserRole[];
 }
