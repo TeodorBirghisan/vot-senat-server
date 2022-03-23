@@ -22,8 +22,6 @@ export class UserRoleService {
     }
 
     const userId: number = req.user.id;
-
-    return await this.getRolesForUser(userId);
   }
 
   async getRolesForUser(userId: number) {
@@ -48,5 +46,18 @@ export class UserRoleService {
     });
 
     await this.userRoleRepository.save(userRoleEntries);
+  }
+
+  async checkPermission(req: any, roles: UserRolesEnum[]): Promise<boolean> {
+    const userId: number = req.user.id;
+
+    const userRoles: string[] = await this.getRolesForUser(userId);
+
+    // Compare that every role required matches the users role
+    const hasPermission: boolean = roles.every((requiredRole) =>
+      userRoles.includes(requiredRole),
+    );
+
+    return hasPermission;
   }
 }

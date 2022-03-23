@@ -11,13 +11,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { UserPermission } from '../permission/user-permission.decorator';
+import { UserPermissionGuard } from '../permission/user-permission.guard';
+import { UserRolesEnum } from '../role/role.entity';
 import { MeetingDTO } from './meeting.dto';
 
 import { Meeting } from './meeting.entity';
 import { MeetingService } from './meeting.service';
 
 @Controller('/meetings')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard(), UserPermissionGuard)
 export class MeetingsController {
   constructor(private meetingService: MeetingService) {}
 
@@ -27,6 +30,7 @@ export class MeetingsController {
   }
 
   @Post()
+  @UserPermission([UserRolesEnum.CAN_CREATE_MEETINGS])
   createMeeting(
     @Body() meeting: MeetingDTO,
     @Req() req: any,
