@@ -38,6 +38,6 @@ export class AppModule {
     private userRoleService: UserRoleService,
   ) {
     //CREATE OWNER IN SEED
-    // userRoleService.seed();
+    //userRoleService.seed();
   }
 }
