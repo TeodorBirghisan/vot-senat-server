@@ -39,6 +39,7 @@ export class MeetingsController {
   }
 
   @Delete('/:meetingId')
+  @UserPermission([UserRolesEnum.CAN_DELETE_MEETINGS])
   deleteMeeting(
     @Param(
       'meetingId',

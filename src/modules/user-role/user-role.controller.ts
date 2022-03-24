@@ -10,11 +10,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { UserPermission } from '../permission/user-permission.decorator';
+import { UserPermissionGuard } from '../permission/user-permission.guard';
 import { UserRolesEnum } from '../role/role.entity';
 import { UserRoleService } from './user-role.service';
 
 @Controller('/user-role')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard(), UserPermissionGuard)
 export class UserRoleController {
   constructor(private userRoleService: UserRoleService) {}
 
@@ -24,6 +26,7 @@ export class UserRoleController {
   }
 
   @Put('/grant')
+  @UserPermission([UserRolesEnum.CAN_GRANT_ROLES])
   async grantUserRole(
     @Body(
       'userId',
