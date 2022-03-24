@@ -15,6 +15,10 @@ export class UserService {
     return this.usersRepository.find();
   }
 
+  async findAllByIds(userIds: number[]): Promise<User[]> {
+    return this.usersRepository.findByIds(userIds);
+  }
+
   //TODO abstract findOneBy in a common method
   //TBD hasty abstraction?
   async findOneByEmail(email: string): Promise<User> {

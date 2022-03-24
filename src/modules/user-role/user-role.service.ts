@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Role, UserRolesEnum } from '../role/role.entity';
 import { RoleService } from '../role/role.service';
 import { User } from '../user/user.entity';
@@ -22,6 +22,42 @@ export class UserRoleService {
     }
 
     const userId: number = req.user.id;
+    const roles: string[] = await this.getRolesForUser(userId);
+
+    const isAdmin: boolean = roles.includes(UserRolesEnum.CAN_GRANT_PRESIDENT);
+    const isPresident: boolean =
+      roles.includes(UserRolesEnum.CAN_GRANT_VICE_PRESIDENT) && !isAdmin;
+
+    if (isAdmin) {
+      // is admin and get ALL users
+      const users: User[] = await this.userService.findAll();
+      return users;
+    } else if (isPresident) {
+      // is president and get ALL users that do not have CAN_GRANT_PRESIDENT;
+      const userIdsToGet: number[] =
+        await this.getUserIdsWithoutPresidentRole();
+      const users: User[] = await this.userService.findAllByIds(userIdsToGet);
+      return users;
+    } else {
+      // is vice-presindent
+    }
+  }
+
+  async getUserIdsWithoutPresidentRole() {
+    // Get all userIds that do not have an CAN_GRANT_PRESIDENT role id
+    const presidentRole: Role = await this.roleService.getIdByRoleName(
+      UserRolesEnum.CAN_GRANT_PRESIDENT,
+    );
+    const userRoles: UserRole[] = await this.userRoleRepository.find({
+      where: { role: Not(presidentRole.id) },
+      relations: ['user'],
+    });
+
+    const userIds: number[] = userRoles
+      .map(({ user }) => user.id)
+      .filter((elem, index, self) => index === self.indexOf(elem));
+
+    return userIds;
   }
 
   async getRolesForUser(userId: number) {

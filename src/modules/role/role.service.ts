@@ -45,6 +45,21 @@ export class RoleService {
     return role;
   }
 
+  async getIdByRoleName(role: string): Promise<Role> {
+    const validRole: Role = await this.roleRepository.findOne({
+      where: { name: role },
+    });
+
+    if (!role) {
+      throw new HttpException(
+        'Cannot find specified role!',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return validRole;
+  }
+
   async getValidRoles(roles: UserRolesEnum[]): Promise<Role[]> {
     //TODO: Check for invalid votes
     const actualRoles: Role[] = await this.roleRepository.find({
