@@ -79,41 +79,4 @@ export class RoleService {
 
     return roles;
   }
-
-  async checkPermission(
-    token: string,
-    roles: UserRolesEnum[],
-  ): Promise<boolean> {
-    const securityToken = await this.securityTokenRepository.findOne({
-      //TODO replace magic string with enum
-      relations: ['user'],
-      where: {
-        token,
-      },
-    });
-
-    if (!securityToken || !securityToken?.user) {
-      return false;
-    }
-
-    //TBD is this a redundant query because of the relationship SecurityToken has User?
-    const user = await this.userRepository.findOne({
-      //TODO replace magic string with enum
-      relations: ['roles'],
-      where: {
-        id: securityToken.user.id,
-      },
-    });
-
-    if (!user) {
-      return false;
-    }
-
-    // const userRoles = user.roles.map((role) => role.name);
-    // const hasPermission = roles.every((requiredRole) =>
-    //   userRoles.includes(requiredRole),
-    // );
-
-    // return hasPermission;
-  }
 }
