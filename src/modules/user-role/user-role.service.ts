@@ -16,6 +16,12 @@ export class UserRoleService {
     private roleService: RoleService,
   ) {}
 
+  async getOneByIds(userId: number, roleId: number): Promise<UserRole> {
+    return await this.userRoleRepository.findOne({
+      where: { user: userId, role: roleId },
+    });
+  }
+
   async getAllUsersWithSubRoles(req: any) {
     if (!req.user) {
       throw new HttpException('User cannot be found!', HttpStatus.BAD_REQUEST);
@@ -73,7 +79,19 @@ export class UserRoleService {
     const actualRoles: Role[] = await this.roleService.getValidRoles(roles);
     const user: User = await this.userService.findOneById(userId);
     const userRoleEntries = [];
-    actualRoles.forEach((role) => {
+    actualRoles.forEach(async (role) => {
+      const existingUserRole: UserRole = await this.getOneByIds(
+        user.id,
+        role.id,
+      );
+
+      if (existingUserRole) {
+        throw new HttpException(
+          `User has already assigned the role: ${role.name}!`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const userRole: UserRole = this.userRoleRepository.create({
         user,
         role,
