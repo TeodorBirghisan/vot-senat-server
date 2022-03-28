@@ -34,28 +34,28 @@ export class UserRoleService {
     const isPresident: boolean =
       roles.includes(UserRolesEnum.CAN_GRANT_VICE_PRESIDENT) && !isAdmin;
 
+    const users: User[] = await this.userService.findAll();
+
     if (isAdmin) {
       // is admin and get ALL users
-      const users: User[] = await this.userService.findAll();
       return users;
     } else if (isPresident) {
       // is president and get ALL users that do not have CAN_GRANT_PRESIDENT;
-      const userIdsToGet: number[] =
-        await this.getUserIdsWithoutPresidentRole();
-      const users: User[] = await this.userService.findAllByIds(userIdsToGet);
-      return users;
+      const userIdsToGet: number[] = await this.getUserIdsWithPresidentRole();
+      // const users: User[] = await this.userService.findAllByIds(userIdsToGet);
+      return users.filter((user) => !userIdsToGet.includes(user.id));
     } else {
       // is vice-presindent
     }
   }
 
-  async getUserIdsWithoutPresidentRole() {
-    // Get all userIds that do not have an CAN_GRANT_PRESIDENT role id
+  async getUserIdsWithPresidentRole() {
+    // Get all userIds that have CAN_GRANT_PRESIDENT role
     const presidentRole: Role = await this.roleService.getIdByRoleName(
       UserRolesEnum.CAN_GRANT_PRESIDENT,
     );
     const userRoles: UserRole[] = await this.userRoleRepository.find({
-      where: { role: Not(presidentRole.id) },
+      where: { role: presidentRole.id },
       relations: ['user'],
     });
 
