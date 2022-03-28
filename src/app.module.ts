@@ -7,7 +7,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { InvitationModule } from './modules/invitation/invitation.module';
 import { MeetingModule } from './modules/meeting/meeting.module';
-import { UserPermissionModule } from './modules/permission/user-permission.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { RoleModule } from './modules/role/role.module';
 import { RoleService } from './modules/role/role.service';

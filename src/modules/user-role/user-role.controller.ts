@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   HttpStatus,
-  Param,
   ParseIntPipe,
   Put,
   Req,

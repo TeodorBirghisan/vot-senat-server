@@ -1,4 +1,3 @@
-import { UserPermissionModule } from './../permission/user-permission.module';
 import { Meeting } from './meeting.entity';
 import { Module } from '@nestjs/common';
 import { MeetingsController } from './meeting.controller';

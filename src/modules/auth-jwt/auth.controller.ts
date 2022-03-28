@@ -1,4 +1,4 @@
-import { UserDto, toUserDto } from './../user/user.dto';
+import { toUserDto } from './../user/user.dto';
 import {
   Controller,
   Get,

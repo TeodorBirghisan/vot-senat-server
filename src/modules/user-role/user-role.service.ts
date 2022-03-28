@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Role, UserRolesEnum } from '../role/role.entity';
 import { RoleService } from '../role/role.service';
 import { User } from '../user/user.entity';
@@ -41,9 +41,9 @@ export class UserRoleService {
       return users;
     } else if (isPresident) {
       // is president and get ALL users that do not have CAN_GRANT_PRESIDENT;
-      const userIdsToGet: number[] = await this.getUserIdsWithPresidentRole();
-      // const users: User[] = await this.userService.findAllByIds(userIdsToGet);
-      return users.filter((user) => !userIdsToGet.includes(user.id));
+      const presidentUsersId: number[] =
+        await this.getUserIdsWithPresidentRole();
+      return users.filter((user) => !presidentUsersId.includes(user.id));
     } else {
       // is vice-presindent
     }
@@ -114,4 +114,6 @@ export class UserRoleService {
 
     return hasPermission;
   }
+
+  //TODO: Endpoint to remove roles
 }
