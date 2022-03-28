@@ -1,10 +1,14 @@
+import {
+  MEETING_STATUS_FINISHED,
+  MEETING_STATUS_IN_PROGRESS,
+  MEETING_STATUS_TO_BE_DISSCUSSED,
+} from './../../core/constants/index';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { Meeting } from './meeting.entity';
-import { MEETING_STATUS_TO_BE_DISSCUSSED } from 'src/core/constants';
 import { MeetingDTO } from './meeting.dto';
 
 @Injectable()
@@ -16,7 +20,20 @@ export class MeetingService {
   ) {}
 
   async getAll(): Promise<Meeting[]> {
-    return this.meetingsRepository.find();
+    return this.meetingsRepository.find({
+      where: {
+        status: In([
+          MEETING_STATUS_TO_BE_DISSCUSSED,
+          MEETING_STATUS_IN_PROGRESS,
+        ]),
+      },
+    });
+  }
+
+  async getAllFinished(): Promise<Meeting[]> {
+    return this.meetingsRepository.find({
+      where: { status: MEETING_STATUS_FINISHED },
+    });
   }
 
   async findOneById(id: number): Promise<Meeting> {
