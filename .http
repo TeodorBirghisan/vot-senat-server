@@ -221,3 +221,6 @@ invitationToken: eztnw00l
     "password": "123"
 }
 
+###
+GET http://localhost:3000/vote/detailed/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODYzMjQ1NSwiZXhwIjoxNjQ4NzE4ODU1fQ.C2EUoX3vJ1Dqcn1PqEaLnkNylWvqqXTyvz3oSdvVCus
