@@ -185,8 +185,12 @@ invitationToken: eztnw00l
 
 ###
 GET http://localhost:3000/roles/available/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0Nzk1MjI0MiwiZXhwIjoxNjQ4MDM4NjQyfQ.9Ex-sagJv9BfwVIhYswk1w_UX3J1JfFT9V6o5EfQgCs
+Authorization: Bearer
 
 ###
 GET http://localhost:3000/user-role/available/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODEzMTk0MywiZXhwIjoxNjQ4MjE4MzQzfQ.PjaEPIXBwOl9yaIapMULK3IKEQuxOrLnwwH7HV_WlXE
+Authorization: Bearer
+
+###
+GET http://localhost:3000/vote/detailed/5
+Authorization: Bearer

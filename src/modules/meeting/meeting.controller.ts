@@ -29,6 +29,11 @@ export class MeetingsController {
     return this.meetingService.getAll();
   }
 
+  @Get('/finished')
+  getFinishedMeetings(): Promise<Meeting[]> {
+    return this.meetingService.getAllFinished();
+  }
+
   @Post()
   @UserPermission([UserRolesEnum.CAN_CREATE_MEETINGS])
   createMeeting(

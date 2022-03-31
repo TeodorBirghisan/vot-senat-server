@@ -65,10 +65,13 @@ export class ParticipationEntryService {
         );
       }
 
-      await this.meetingService.udpateStatus(
-        meetingId,
-        MEETING_STATUS_IN_PROGRESS,
-      );
+      if (meetingToJoin.status == MEETING_STATUS_TO_BE_DISSCUSSED) {
+        await this.meetingService.udpateStatus(
+          meetingId,
+          MEETING_STATUS_IN_PROGRESS,
+        );
+      }
+
       const participationEntry: ParticipationEntry =
         this.participationEntryRepository.create({
           joinTimestamp: timeToJoin,
