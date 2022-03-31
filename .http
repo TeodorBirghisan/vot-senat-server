@@ -28,13 +28,13 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/roles/user/grant
+PUT http://localhost:3000/user-role/grant
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODAzODcxOCwiZXhwIjoxNjQ4MTI1MTE4fQ.i9gQBEEMGynk1aVRLa16q3v-MPgWmsDA9AsIi1sbNvg
 
 {
-    "userId": 8,
-    "roles": ["CAN_CREATE_INVITATION"]
+    "userId": 3,
+    "roles": ["CAN_CREATE_MEETINGS"]
 }
 
 ###
@@ -55,44 +55,6 @@ Content-Type: application/json
     "email": "cezarmocanu@senat.com",
     "password": "123456"
 }
-
-
-###
-
-PUT http://localhost:3000/roles/user/grant
-Content-Type: application/json
-Authorization: Bearer 
-
-{
-    "userId": 2,
-    "roles": ["CAN_VIEW_X", "CAN_VIEW_Y"]
-}
-
-###
-
-GET http://localhost:3000/x
-Content-Type: application/json
-Authorization: Bearer 
-
-
-###
-
-GET http://localhost:3000/y
-Content-Type: application/json
-Authorization: Bearer 
-
-
-###
-
-GET http://localhost:3000/z
-Content-Type: application/json
-Authorization: Bearer 
-
-###
-
-GET http://localhost:3000/xy
-Content-Type: application/json
-Authorization: Bearer 
 
 ###
 
@@ -126,7 +88,7 @@ Authorization: Bearer
 ###
 POST http://localhost:3000/meetings
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODAzODcxOCwiZXhwIjoxNjQ4MTI1MTE4fQ.i9gQBEEMGynk1aVRLa16q3v-MPgWmsDA9AsIi1sbNvg
 
 {
     "title": "test title",
@@ -222,5 +184,13 @@ invitationToken: eztnw00l
 }
 
 ###
+GET http://localhost:3000/roles/available/users
+Authorization: Bearer
+
+###
+GET http://localhost:3000/user-role/available/users
+Authorization: Bearer
+
+###
 GET http://localhost:3000/vote/detailed/5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODYzMjQ1NSwiZXhwIjoxNjQ4NzE4ODU1fQ.C2EUoX3vJ1Dqcn1PqEaLnkNylWvqqXTyvz3oSdvVCus
+Authorization: Bearer

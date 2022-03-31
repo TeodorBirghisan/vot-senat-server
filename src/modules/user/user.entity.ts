@@ -2,16 +2,14 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Meeting } from '../meeting/meeting.entity';
 import { ParticipationEntry } from '../participation-entry/partitcipation-entry.entity';
-import { UserRole } from '../user-role/user-role.entity';
 import { Vote } from '../vote/vote.entity';
 import * as bcrypt from 'bcrypt';
+import { UserRole } from '../user-role/user-role.entity';
 
 @Entity()
 export class User {
@@ -39,10 +37,6 @@ export class User {
   @OneToMany(() => Meeting, (meeting) => meeting.organizer)
   meetings: Meeting[];
 
-  @ManyToMany(() => UserRole)
-  @JoinTable()
-  roles: UserRole[];
-
   @OneToMany(() => Vote, (vote) => vote.user)
   votes: Vote[];
 
@@ -51,4 +45,7 @@ export class User {
     (paticipationEntry) => paticipationEntry.user,
   )
   paticipationEntries: ParticipationEntry[];
+
+  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  userRoles: UserRole[];
 }

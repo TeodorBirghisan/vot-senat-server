@@ -7,20 +7,20 @@ import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { InvitationModule } from './modules/invitation/invitation.module';
 import { MeetingModule } from './modules/meeting/meeting.module';
-import { UserPermissionModule } from './modules/permission/user-permission.module';
 import { TopicModule } from './modules/topic/topic.module';
-import { UserRoleModule } from './modules/user-role/user-role.module';
-import { UserRoleService } from './modules/user-role/user-role.service';
+import { RoleModule } from './modules/role/role.module';
+import { RoleService } from './modules/role/role.service';
 import { VoteModule } from './modules/vote/vote.module';
 import { MailModule } from './modules/mail/mail.module';
 import { ParticipationEntryModule } from './modules/participation-entry/participation-entry.module';
 import { AuthJwtModule } from './modules/auth-jwt/auth-jwt.module';
+import { UserRoleModule } from './modules/user-role/user-role.module';
 
 @Module({
   imports: [
     DatabaseModule,
     AuthModule,
-    UserRoleModule,
+    RoleModule,
     MeetingModule,
     InvitationModule,
     TopicModule,
@@ -28,6 +28,7 @@ import { AuthJwtModule } from './modules/auth-jwt/auth-jwt.module';
     MailModule,
     ParticipationEntryModule,
     AuthJwtModule,
+    UserRoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -35,7 +36,7 @@ import { AuthJwtModule } from './modules/auth-jwt/auth-jwt.module';
 export class AppModule {
   constructor(
     private connection: Connection,
-    private userRoleService: UserRoleService,
+    private userRoleService: RoleService,
   ) {
     //CREATE OWNER IN SEED
     // userRoleService.seed();

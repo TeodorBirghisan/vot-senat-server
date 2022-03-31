@@ -7,11 +7,13 @@ import { User } from '../user/user.entity';
 import { UserModule } from '../user/user.module';
 import { ParticipationEntry } from '../participation-entry/partitcipation-entry.entity';
 import { PassportModule } from '@nestjs/passport';
+import { UserRoleModule } from '../user-role/user-role.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Meeting, User, ParticipationEntry]),
     UserModule,
+    UserRoleModule,
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),

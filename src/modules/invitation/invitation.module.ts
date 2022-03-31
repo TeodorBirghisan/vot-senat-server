@@ -3,7 +3,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailModule } from '../mail/mail.module';
 import { SecurityModule } from '../security/security.module';
-import { UserModule } from '../user/user.module';
+import { UserRoleModule } from '../user-role/user-role.module';
 import { InvitationController } from './invitation.controller';
 import { Invitation } from './invitation.entity';
 import { InvitationGuard } from './invitation.guard';
@@ -14,6 +14,7 @@ import { InvitationService } from './invitation.service';
     TypeOrmModule.forFeature([Invitation]),
     SecurityModule,
     MailModule,
+    UserRoleModule,
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),

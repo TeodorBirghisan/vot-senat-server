@@ -1,80 +1,119 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { SecurityToken } from '../security/security-token.entity';
+import { Repository } from 'typeorm';
+import { Role, UserRolesEnum } from '../role/role.entity';
+import { RoleService } from '../role/role.service';
 import { User } from '../user/user.entity';
-import { UserRole, UserRolesEnum } from './user-role.entity';
+import { UserService } from '../user/user.service';
+import { UserRole } from './user-role.entity';
 
 @Injectable()
 export class UserRoleService {
   constructor(
     @InjectRepository(UserRole)
     private userRoleRepository: Repository<UserRole>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-    @InjectRepository(SecurityToken)
-    private securityTokenRepository: Repository<SecurityToken>,
+    private userService: UserService,
+    private roleService: RoleService,
   ) {}
 
-  //TODO mechaninc that ensures the user roles are added whenever the database is cleaned
-  seed() {
-    Object.values(UserRolesEnum).map((role) => {
-      const userRole: UserRole = this.userRoleRepository.create({
-        name: role,
-      });
-      this.userRoleRepository.save(userRole);
+  async getOneByIds(userId: number, roleId: number): Promise<UserRole> {
+    return await this.userRoleRepository.findOne({
+      where: { user: userId, role: roleId },
     });
   }
 
-  async checkPermission(
-    token: string,
-    roles: UserRolesEnum[],
-  ): Promise<boolean> {
-    const securityToken = await this.securityTokenRepository.findOne({
-      //TODO replace magic string with enum
+  async getAllUsersWithSubRoles(req: any) {
+    if (!req.user) {
+      throw new HttpException('User cannot be found!', HttpStatus.BAD_REQUEST);
+    }
+
+    const userId: number = req.user.id;
+    const roles: string[] = await this.getRolesForUser(userId);
+
+    const isAdmin: boolean = roles.includes(UserRolesEnum.CAN_GRANT_PRESIDENT);
+    const isPresident: boolean =
+      roles.includes(UserRolesEnum.CAN_GRANT_VICE_PRESIDENT) && !isAdmin;
+
+    const users: User[] = await this.userService.findAll();
+
+    if (isAdmin) {
+      // is admin and get ALL users
+      return users;
+    } else if (isPresident) {
+      // is president and get ALL users that do not have CAN_GRANT_PRESIDENT;
+      const presidentUsersId: number[] =
+        await this.getUserIdsWithPresidentRole();
+      return users.filter((user) => !presidentUsersId.includes(user.id));
+    } else {
+      // is vice-presindent
+    }
+  }
+
+  async getUserIdsWithPresidentRole() {
+    // Get all userIds that have CAN_GRANT_PRESIDENT role
+    const presidentRole: Role = await this.roleService.getIdByRoleName(
+      UserRolesEnum.CAN_GRANT_PRESIDENT,
+    );
+    const userRoles: UserRole[] = await this.userRoleRepository.find({
+      where: { role: presidentRole.id },
       relations: ['user'],
-      where: {
-        token,
-      },
     });
 
-    if (!securityToken || !securityToken?.user) {
-      return false;
-    }
+    const userIds: number[] = userRoles
+      .map(({ user }) => user.id)
+      .filter((elem, index, self) => index === self.indexOf(elem));
 
-    //TBD is this a redundant query because of the relationship SecurityToken has User?
-    const user = await this.userRepository.findOne({
-      //TODO replace magic string with enum
-      relations: ['roles'],
-      where: {
-        id: securityToken.user.id,
-      },
+    return userIds;
+  }
+
+  async getRolesForUser(userId: number) {
+    const userRoles: UserRole[] = await this.userRoleRepository.find({
+      where: { user: userId },
+      relations: ['role'],
+    });
+    const roles: string[] = userRoles.map((userRole) => userRole.role.name);
+    return roles;
+  }
+
+  async grantUserRoles(userId: number, roles: UserRolesEnum[]) {
+    const actualRoles: Role[] = await this.roleService.getValidRoles(roles);
+    const user: User = await this.userService.findOneById(userId);
+    const userRoleEntries = [];
+    actualRoles.forEach(async (role) => {
+      const existingUserRole: UserRole = await this.getOneByIds(
+        user.id,
+        role.id,
+      );
+
+      if (existingUserRole) {
+        throw new HttpException(
+          `User has already assigned the role: ${role.name}!`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const userRole: UserRole = this.userRoleRepository.create({
+        user,
+        role,
+      });
+      userRoleEntries.push(userRole);
     });
 
-    if (!user) {
-      return false;
-    }
+    await this.userRoleRepository.save(userRoleEntries);
+  }
 
-    const userRoles = user.roles.map((role) => role.name);
-    const hasPermission = roles.every((requiredRole) =>
+  async checkPermission(req: any, roles: UserRolesEnum[]): Promise<boolean> {
+    const userId: number = req.user.id;
+
+    const userRoles: string[] = await this.getRolesForUser(userId);
+
+    // Compare that every role required matches the users role
+    const hasPermission: boolean = roles.every((requiredRole) =>
       userRoles.includes(requiredRole),
     );
 
     return hasPermission;
   }
 
-  async grantRolesToUser(user: User, roles: UserRolesEnum[]) {
-    //TODO check if roles is not null/undefined/empty
-    const grantedRoles: UserRole[] = await this.userRoleRepository.find({
-      where: {
-        name: In(roles),
-      },
-    });
-
-    user.roles = grantedRoles;
-
-    this.userRepository.save(user);
-  }
-
-  //TODO remove role/roles from user
+  //TODO: Endpoint to remove roles
 }
