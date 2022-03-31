@@ -49,4 +49,20 @@ export class VoteController {
   ): Promise<Record<string, string>> {
     return this.voteService.getResult(topicId);
   }
+
+  @Get('/detailed/:topicId')
+  getDetailedVotes(
+    // @Param(
+    //   'meetingId',
+    //   new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    // )
+    // meetingId: number,
+    @Param(
+      'topicId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    topicId: number,
+  ) {
+    return this.voteService.getDetailedVotes(topicId);
+  }
 }

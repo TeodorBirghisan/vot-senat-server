@@ -1,3 +1,5 @@
+import { MeetingService } from './../meeting/meeting.service';
+import { Meeting } from './../meeting/meeting.entity';
 import {
   VOTE_VALUE_ABTAIN,
   VOTE_VALUE_YES,
@@ -19,6 +21,7 @@ export class VoteService {
     private voteRepository: Repository<Vote>,
     private topicService: TopicService,
     private userService: UserService,
+    private meetingService: MeetingService,
   ) {}
 
   async findOneByIds(topicId: number, userId: number): Promise<Vote> {
@@ -39,6 +42,7 @@ export class VoteService {
   async findAllByTopic(topicId: number): Promise<Vote[]> {
     return this.voteRepository.find({
       where: { topic: topicId },
+      relations: ['user', 'topic'],
     });
   }
 
@@ -123,5 +127,19 @@ export class VoteService {
     const result: Record<string, string> = { vote: majorityVote };
 
     return result;
+  }
+
+  // meetingId: number,
+  async getDetailedVotes(topicId: number) {
+    const detailedUserVotes = [];
+
+    const votes = await this.findAllByTopic(topicId);
+    votes.map((vote) =>
+      detailedUserVotes.push(
+        `User ${vote.user.email} voted ${vote.value} in topic ${vote.topic.content}`,
+      ),
+    );
+
+    return detailedUserVotes;
   }
 }
