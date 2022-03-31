@@ -129,23 +129,16 @@ export class VoteService {
     return result;
   }
 
-  async getDetailedVotes(meetingId: number) {
-    const topics: Topic[] = await this.topicService.getAllTopicsInMeeting(
-      meetingId,
-    );
-
-    const topicIds: number[] = topics.map((topic) => topic.id);
-
+  // meetingId: number,
+  async getDetailedVotes(topicId: number) {
     const detailedUserVotes = [];
 
-    for (const topicId of topicIds) {
-      const votes = await this.findAllByTopic(topicId);
-      votes.map((vote) =>
-        detailedUserVotes.push(
-          `User ${vote.user.email} voted ${vote.value} in topic ${vote.topic.content}`,
-        ),
-      );
-    }
+    const votes = await this.findAllByTopic(topicId);
+    votes.map((vote) =>
+      detailedUserVotes.push(
+        `User ${vote.user.email} voted ${vote.value} in topic ${vote.topic.content}`,
+      ),
+    );
 
     return detailedUserVotes;
   }

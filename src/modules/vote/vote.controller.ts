@@ -50,14 +50,19 @@ export class VoteController {
     return this.voteService.getResult(topicId);
   }
 
-  @Get('/detailed/:meetingId')
+  @Get('/detailed/:topicId')
   getDetailedVotes(
+    // @Param(
+    //   'meetingId',
+    //   new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    // )
+    // meetingId: number,
     @Param(
-      'meetingId',
+      'topicId',
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
-    meetingId: number,
+    topicId: number,
   ) {
-    return this.voteService.getDetailedVotes(meetingId);
+    return this.voteService.getDetailedVotes(topicId);
   }
 }
