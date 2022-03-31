@@ -194,3 +194,7 @@ Authorization: Bearer
 ###
 GET http://localhost:3000/vote/detailed/5
 Authorization: Bearer
+
+###
+POST http://localhost:3000/roles/seed
+Authorization: Bearer
