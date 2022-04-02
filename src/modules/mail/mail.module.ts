@@ -14,9 +14,16 @@ dotenv.config();
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT,
         secure: true,
+        service: 'gmail',
         auth: {
+          type: 'OAuth2',
           user: process.env.EMAIL_ADDRESS,
-          pass: process.env.EMAIL_PASS,
+          clientId: process.env.CLIENT_ID,
+          clientSecret: process.env.CLIENT_SECRET,
+          refreshToken: process.env.REFRESH_TOKEN,
+          tls: {
+            rejectUnauthorized: false,
+          },
         },
         logger: true,
       },
