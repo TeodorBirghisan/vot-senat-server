@@ -101,8 +101,10 @@ export class TopicService {
 
       const isActive = topic.isActive;
       const content = topic.content;
+      const topicId = topic.id;
 
       return {
+        topicId,
         content,
         isActive,
         votes,
