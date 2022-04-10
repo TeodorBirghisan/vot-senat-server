@@ -38,7 +38,7 @@ export class TopicService {
       where: {
         meeting: meeting,
       },
-      relations: ['meeting'],
+      relations: ['votes', 'votes.user'],
     });
   }
 
@@ -79,8 +79,33 @@ export class TopicService {
     return await this.topicRepository.save(topic);
   }
 
-  async getAllTopicsInMeeting(meetingId: number): Promise<Topic[]> {
-    return await this.findAllTopicsByMeeting(meetingId);
+  async getAllTopicsInMeeting(meetingId: number): Promise<any> {
+    const topics: Topic[] = await this.findAllTopicsByMeeting(meetingId);
+
+    const voteResults = topics.map((topic) => {
+      const votes = topic.votes.reduce(
+        (results, vote) => {
+          results[vote.value] = results[vote.value] + 1;
+          return results;
+        },
+        {
+          YES: 0,
+          ABTAIN: 0,
+          NO: 0,
+        },
+      );
+
+      const usersWhoVotes = topic.votes.map((vote) => {
+        return vote.user.id;
+      });
+
+      return {
+        votes,
+        usersWhoVotes,
+      };
+    });
+
+    return { topics: voteResults };
   }
 
   async deleteTopicInMeeting(
