@@ -112,7 +112,7 @@ export class TopicService {
       };
     });
 
-    return { topics: voteResults };
+    return voteResults;
   }
 
   async deleteTopicInMeeting(
