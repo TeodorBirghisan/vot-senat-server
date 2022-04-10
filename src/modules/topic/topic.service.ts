@@ -99,7 +99,12 @@ export class TopicService {
         return vote.user.id;
       });
 
+      const isActive = topic.isActive;
+      const content = topic.content;
+
       return {
+        content,
+        isActive,
         votes,
         usersWhoVotes,
       };
