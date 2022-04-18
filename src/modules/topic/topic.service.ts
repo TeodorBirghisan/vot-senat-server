@@ -115,6 +115,23 @@ export class TopicService {
     return voteResults;
   }
 
+  async activateTopicInMeeting(topicId: number): Promise<any> {
+    const topicToActivate: Topic = await this.findOneById(topicId);
+    topicToActivate.isActive = true;
+    const updatedTopic: Topic = await this.topicRepository.save(
+      topicToActivate,
+    );
+
+    if (!updatedTopic) {
+      throw new HttpException(
+        'Could not activate the topic',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return updatedTopic;
+  }
+
   async deleteTopicInMeeting(
     meetingId: number,
     topicId: number,
