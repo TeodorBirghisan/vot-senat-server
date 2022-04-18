@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ADMIN_ROLE, PRESIDENT_ROLE, SENATOR_ROLE } from 'src/core/constants';
 import { Repository } from 'typeorm';
 import { Role, UserRolesEnum } from '../role/role.entity';
 import { RoleService } from '../role/role.service';
@@ -113,6 +114,22 @@ export class UserRoleService {
     );
 
     return hasPermission;
+  }
+
+  async returnUserRole(userId: number): Promise<string> {
+    const roles: string[] = await this.getRolesForUser(userId);
+
+    const isAdmin: boolean = roles.includes(UserRolesEnum.CAN_GRANT_PRESIDENT);
+    const isPresident: boolean =
+      roles.includes(UserRolesEnum.CAN_GRANT_VICE_PRESIDENT) && !isAdmin;
+
+    if (isAdmin) {
+      return ADMIN_ROLE;
+    } else if (isPresident) {
+      return PRESIDENT_ROLE;
+    } else {
+      return SENATOR_ROLE;
+    }
   }
 
   //TODO: Endpoint to remove roles
