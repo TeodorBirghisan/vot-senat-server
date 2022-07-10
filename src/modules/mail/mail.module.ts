@@ -16,6 +16,10 @@ const ouath2Client = new OAuth2(
   'https://developers.google.com/oauthplayground',
 );
 
+ouath2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+
+const accessToken = ouath2Client.getAccessToken();
+
 @Module({
   imports: [
     MailerModule.forRoot({
@@ -30,7 +34,7 @@ const ouath2Client = new OAuth2(
           clientId: process.env.CLIENT_ID,
           clientSecret: process.env.CLIENT_SECRET,
           refreshToken: process.env.REFRESH_TOKEN,
-          accessToken: async () => await ouath2Client.getAccessToken(),
+          accessToken: accessToken,
           tls: {
             rejectUnauthorized: false,
           },
