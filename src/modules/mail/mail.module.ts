@@ -10,15 +10,28 @@ dotenv.config();
 
 const OAuth2 = google.auth.OAuth2;
 
-const ouath2Client = new OAuth2(
-  process.env.CLIENT_ID,
-  process.env.CLIENT_SECRET,
-  'https://developers.google.com/oauthplayground',
-);
+const createAccessToken = async () => {
+  const oauth2Client = new OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground',
+  );
 
-ouath2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+  oauth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN,
+  });
 
-const accessToken = ouath2Client.getAccessToken();
+  const accessToken = await new Promise((resolve, reject) => {
+    oauth2Client.getAccessToken((err, token) => {
+      if (err) {
+        reject('Failed to create access token :(');
+      }
+      resolve(token);
+    });
+  });
+
+  return accessToken;
+};
 
 @Module({
   imports: [
@@ -34,7 +47,7 @@ const accessToken = ouath2Client.getAccessToken();
           clientId: process.env.CLIENT_ID,
           clientSecret: process.env.CLIENT_SECRET,
           refreshToken: process.env.REFRESH_TOKEN,
-          accessToken: accessToken,
+          accessToken: async () => await createAccessToken(),
           tls: {
             rejectUnauthorized: false,
           },
