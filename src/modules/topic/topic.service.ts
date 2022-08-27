@@ -38,7 +38,7 @@ export class TopicService {
       where: {
         meeting: meeting,
       },
-      relations: ['meeting'],
+      relations: ['votes', 'votes.user'],
     });
   }
 
@@ -79,8 +79,57 @@ export class TopicService {
     return await this.topicRepository.save(topic);
   }
 
-  async getAllTopicsInMeeting(meetingId: number): Promise<Topic[]> {
-    return await this.findAllTopicsByMeeting(meetingId);
+  async getAllTopicsInMeeting(meetingId: number): Promise<any> {
+    const topics: Topic[] = await this.findAllTopicsByMeeting(meetingId);
+
+    const voteResults = topics.map((topic) => {
+      const votes = topic.votes.reduce(
+        (results, vote) => {
+          results[vote.value] = results[vote.value] + 1;
+          return results;
+        },
+        {
+          YES: 0,
+          ABTAIN: 0,
+          NO: 0,
+        },
+      );
+
+      const usersWhoVotes = topic.votes.map((vote) => {
+        return vote.user.id;
+      });
+
+      const isActive = topic.isActive;
+      const content = topic.content;
+      const topicId = topic.id;
+
+      return {
+        topicId,
+        content,
+        isActive,
+        votes,
+        usersWhoVotes,
+      };
+    });
+
+    return voteResults;
+  }
+
+  async activateTopicInMeeting(topicId: number): Promise<any> {
+    const topicToActivate: Topic = await this.findOneById(topicId);
+    topicToActivate.isActive = true;
+    const updatedTopic: Topic = await this.topicRepository.save(
+      topicToActivate,
+    );
+
+    if (!updatedTopic) {
+      throw new HttpException(
+        'Could not activate the topic',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return updatedTopic;
   }
 
   async deleteTopicInMeeting(

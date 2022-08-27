@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -39,6 +40,17 @@ export class TopicsController {
     meetingId: number,
   ): Promise<Topic[]> {
     return this.topicService.getAllTopicsInMeeting(meetingId);
+  }
+
+  @Put('/activate/:topicId')
+  activateTopicInMeeting(
+    @Param(
+      'topicId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    topicId: number,
+  ): Promise<Topic[]> {
+    return this.topicService.activateTopicInMeeting(topicId);
   }
 
   @Delete('/:meetingId')

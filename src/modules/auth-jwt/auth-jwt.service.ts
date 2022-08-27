@@ -1,3 +1,4 @@
+import { UserRoleService } from './../user-role/user-role.service';
 import { UserService } from './../user/user.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -10,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 export class AuthJwtService {
   constructor(
     private readonly userService: UserService,
+    private readonly userRoleService: UserRoleService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -36,8 +38,11 @@ export class AuthJwtService {
 
     const token = this._createToken(user);
 
+    const userRole = await this.userRoleService.returnUserRole(user.id);
+
     return {
       userId: user.id,
+      role: userRole,
       ...token,
     };
   }

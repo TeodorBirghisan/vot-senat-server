@@ -198,3 +198,8 @@ Authorization: Bearer
 ###
 POST http://localhost:3000/roles/seed
 Authorization: Bearer
+
+###
+
+PUT http://localhost:3000/topics/activate/17
+Authorization: Bearer 
