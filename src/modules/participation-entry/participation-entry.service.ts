@@ -40,15 +40,12 @@ export class ParticipationEntryService {
     return usersCount;
   }
 
-  async joinMeeting(
-    meetingId: number,
-    userId: number,
-  ): Promise<ParticipationEntry> {
+  async joinMeeting(meetingId: number, req: any): Promise<ParticipationEntry> {
     const meetingToJoin: Meeting = await this.meetingService.findOneById(
       meetingId,
     );
 
-    const userToJoin: User = await this.userService.findOneById(userId);
+    const userToJoin: User = await this.userService.findOneById(req.user.id);
 
     const timeToJoin: Date = new Date();
 
@@ -60,7 +57,7 @@ export class ParticipationEntryService {
       );
     } else {
       const alreadyJoined: ParticipationEntry =
-        await this.findOneByMeetingAndUser(meetingId, userId);
+        await this.findOneByMeetingAndUser(meetingId, req.user.id);
       if (alreadyJoined) {
         throw new HttpException(
           'You already joined this meeting',
@@ -68,10 +65,13 @@ export class ParticipationEntryService {
         );
       }
 
-      await this.meetingService.udpateStatus(
-        meetingId,
-        MEETING_STATUS_IN_PROGRESS,
-      );
+      if (meetingToJoin.status == MEETING_STATUS_TO_BE_DISSCUSSED) {
+        await this.meetingService.udpateStatus(
+          meetingId,
+          MEETING_STATUS_IN_PROGRESS,
+        );
+      }
+
       const participationEntry: ParticipationEntry =
         this.participationEntryRepository.create({
           joinTimestamp: timeToJoin,
@@ -83,18 +83,22 @@ export class ParticipationEntryService {
     }
   }
 
-  async exitMeeting(
-    meetingId: number,
-    userId: number,
-  ): Promise<ParticipationEntry> {
+  async exitMeeting(meetingId: number, req: any): Promise<ParticipationEntry> {
     const timeToExit: Date = new Date();
 
     const participationEntry: ParticipationEntry =
-      await this.findOneByMeetingAndUser(meetingId, userId);
+      await this.findOneByMeetingAndUser(meetingId, req.user.id);
 
     if (!participationEntry) {
       throw new HttpException(
         'Cannot exit a meeting that you did not join',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (participationEntry.exitTimestamp) {
+      throw new HttpException(
+        'You already exited this meeting',
         HttpStatus.BAD_REQUEST,
       );
     }

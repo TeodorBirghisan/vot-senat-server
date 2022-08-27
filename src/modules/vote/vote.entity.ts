@@ -13,7 +13,9 @@ export class Vote {
   @Column()
   date: Date;
 
-  @ManyToOne(() => Topic, (topic) => topic.votes)
+  @ManyToOne(() => Topic, (topic) => topic.votes, {
+    onDelete: 'CASCADE',
+  })
   topic: Topic;
 
   @ManyToOne(() => User, (user) => user.votes)

@@ -7,11 +7,15 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Topic } from './topic.entity';
 import { TopicService } from './topic.service';
 
 @Controller('/topics')
+@UseGuards(AuthGuard())
 export class TopicsController {
   constructor(private topicService: TopicService) {}
 
@@ -38,6 +42,17 @@ export class TopicsController {
     return this.topicService.getAllTopicsInMeeting(meetingId);
   }
 
+  @Put('/activate/:topicId')
+  activateTopicInMeeting(
+    @Param(
+      'topicId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    topicId: number,
+  ): Promise<Topic[]> {
+    return this.topicService.activateTopicInMeeting(topicId);
+  }
+
   @Delete('/:meetingId')
   deleteTopicInMeeting(
     @Param(
@@ -46,7 +61,7 @@ export class TopicsController {
     )
     meetingId: number,
     @Body('topicId') topicId: number,
-  ): Promise<Topic> {
+  ): Promise<number> {
     return this.topicService.deleteTopicInMeeting(meetingId, topicId);
   }
 }

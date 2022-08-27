@@ -1,20 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-//TODO replace strict roles with action roles
-//such as CAN_VIEW_X, CAN_CREATE_Y
-export enum UserRolesEnum {
-  CAN_VIEW_X = 'CAN_VIEW_X',
-  CAN_VIEW_Y = 'CAN_VIEW_Y',
-  CAN_VIEW_Z = 'CAN_VIEW_Z',
-  CAN_CREATE_INVITATION = 'CAN_CREATE_INVITATION',
-  //ADD CAN_GRANT_ROLES
-}
+import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from '../role/role.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class UserRole {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' })
-  name: UserRolesEnum;
+  @ManyToOne(() => User, (user) => user.userRoles)
+  @JoinColumn()
+  user: User;
+
+  @ManyToOne(() => Role, (role) => role.userRoles)
+  @JoinColumn()
+  role: Role;
 }
