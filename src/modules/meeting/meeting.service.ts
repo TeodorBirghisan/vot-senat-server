@@ -1,10 +1,14 @@
+import {
+  MEETING_STATUS_FINISHED,
+  MEETING_STATUS_IN_PROGRESS,
+  MEETING_STATUS_TO_BE_DISSCUSSED,
+} from './../../core/constants/index';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { Meeting } from './meeting.entity';
-import { MEETING_STATUS_TO_BE_DISSCUSSED } from 'src/core/constants';
 import { MeetingDTO } from './meeting.dto';
 
 @Injectable()
@@ -16,7 +20,20 @@ export class MeetingService {
   ) {}
 
   async getAll(): Promise<Meeting[]> {
-    return this.meetingsRepository.find();
+    return this.meetingsRepository.find({
+      where: {
+        status: In([
+          MEETING_STATUS_TO_BE_DISSCUSSED,
+          MEETING_STATUS_IN_PROGRESS,
+        ]),
+      },
+    });
+  }
+
+  async getAllFinished(): Promise<Meeting[]> {
+    return this.meetingsRepository.find({
+      where: { status: MEETING_STATUS_FINISHED },
+    });
   }
 
   async findOneById(id: number): Promise<Meeting> {
@@ -24,6 +41,21 @@ export class MeetingService {
       where: {
         id,
       },
+    });
+
+    if (!meeting) {
+      throw new HttpException('Meeting not found!', HttpStatus.BAD_REQUEST);
+    }
+
+    return meeting;
+  }
+
+  async findOneByIdWithUser(id: number): Promise<Meeting> {
+    const meeting: Meeting = await this.meetingsRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['organizer'],
     });
 
     if (!meeting) {
@@ -41,27 +73,57 @@ export class MeetingService {
     await this.meetingsRepository.save(meetingToUpdate);
   }
 
-  async saveOne(userId: number, meeting: MeetingDTO): Promise<Meeting> {
-    const user: User = await this.userService.findOneById(userId);
+  async saveOne(req: any, meeting: MeetingDTO): Promise<Meeting> {
+    if (!meeting) {
+      throw new HttpException(
+        'Meeting cannot be empty',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (!meeting.description) {
+      meeting.description = 'No description provided';
+    }
+
+    const organizer: User = await this.userService.findOneById(req.user.id);
+
+    if (!req.user || !organizer) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
 
     const newMeeting: Meeting = this.meetingsRepository.create({
       title: meeting.title,
       startDate: meeting.startDate,
       status: MEETING_STATUS_TO_BE_DISSCUSSED,
-      organizer: user,
+      organizer: organizer,
       description: meeting.description,
     });
 
     return this.meetingsRepository.save(newMeeting);
   }
 
-  //TODO: Can only delete the meetings you created
-  async deleteOne(meetingId: number): Promise<Meeting> {
-    const meetingToDelete: Meeting = await this.findOneById(meetingId);
-    const meeting: Meeting = await this.meetingsRepository.remove(
+  async deleteOne(req: any, meetingId: number): Promise<number> {
+    if (!req.user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+
+    const meetingToDelete: Meeting = await this.findOneByIdWithUser(meetingId);
+
+    if (req.user.email != meetingToDelete.organizer.email) {
+      throw new HttpException(
+        'Cannot delete meetings you did not create',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const deletedMeeting: Meeting = await this.meetingsRepository.remove(
       meetingToDelete,
     );
 
-    return meeting;
+    if (!deletedMeeting) {
+      throw new HttpException('Cannot delete!', HttpStatus.BAD_REQUEST);
+    }
+
+    return meetingId;
   }
 }

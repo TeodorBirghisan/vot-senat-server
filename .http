@@ -5,17 +5,15 @@ Content-Type: application/json
 
 GET http://localhost:3000/
 Content-Type: application/json
-Authorization: Bearer inej2rko
+Authorization: Bearer 
 
 ###
 POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "birghisanteodor@yahoo.com",
-    "password": "123",
-    "firstName": "Teodor",
-    "lastName": "Birghisan"
+    "email": "a",
+    "password": "123"
 }
 
 ###
@@ -30,13 +28,13 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/roles/user/grant
+PUT http://localhost:3000/user-role/grant
 Content-Type: application/json
-Authorization: Bearer t3zcf5iq
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODAzODcxOCwiZXhwIjoxNjQ4MTI1MTE4fQ.i9gQBEEMGynk1aVRLa16q3v-MPgWmsDA9AsIi1sbNvg
 
 {
-    "userId": 8,
-    "roles": ["CAN_CREATE_INVITATION"]
+    "userId": 3,
+    "roles": ["CAN_CREATE_MEETINGS"]
 }
 
 ###
@@ -58,52 +56,14 @@ Content-Type: application/json
     "password": "123456"
 }
 
-
-###
-
-PUT http://localhost:3000/roles/user/grant
-Content-Type: application/json
-Authorization: Bearer inej2rko
-
-{
-    "userId": 2,
-    "roles": ["CAN_VIEW_X", "CAN_VIEW_Y"]
-}
-
-###
-
-GET http://localhost:3000/x
-Content-Type: application/json
-Authorization: Bearer inej2rko
-
-
-###
-
-GET http://localhost:3000/y
-Content-Type: application/json
-Authorization: Bearer inej2rko
-
-
-###
-
-GET http://localhost:3000/z
-Content-Type: application/json
-Authorization: Bearer inej2rko
-
-###
-
-GET http://localhost:3000/xy
-Content-Type: application/json
-Authorization: Bearer inej2rko
-
 ###
 
 POST http://localhost:3000/invitation/
 Content-Type: application/json
-Authorization: Bearer t3zcf5iq
+Authorization: Bearer 
 
 {
-    "email": "birghisanteodor@yahoo.com"
+    "email": "a@yahoo.com"
 }
 
 ###
@@ -111,7 +71,7 @@ Authorization: Bearer t3zcf5iq
 
 POST http://localhost:3000/auth/invitation/signup
 Content-Type: application/json
-Authorization: lbo6y9lc
+Authorization:
 
 {
     "email": "invited@senat.com",
@@ -124,10 +84,11 @@ Authorization: lbo6y9lc
 
 GET http://localhost:3000/meetings
 Content-Type: application/json
-
+Authorization: Bearer 
 ###
-POST http://localhost:3000/meetings/10
+POST http://localhost:3000/meetings
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODAzODcxOCwiZXhwIjoxNjQ4MTI1MTE4fQ.i9gQBEEMGynk1aVRLa16q3v-MPgWmsDA9AsIi1sbNvg
 
 {
     "title": "test title",
@@ -136,31 +97,31 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/topics/28
+POST http://localhost:3000/topics/35
 Content-Type: application/json
 
 {
-    "content": "test topic 3"
+    "content": "topic vot test"
 }
 
 ###
-GET http://localhost:3000/topics/27
+GET http://localhost:3000/topics/35
 Content-Type: application/json
 
 ###
-POST http://localhost:3000/vote/1/1
+POST http://localhost:3000/vote/22/11
 Content-Type: application/json
 
 {
-    "voteValue": "YES"
+    "voteValue": "NoneSense"
 }
 
 ###
 POST http://localhost:3000/participation/joinMeeting/35/8
 
 ###
-DELETE http://localhost:3000/meetings/28
-
+DELETE http://localhost:3000/meetings/2
+Authorization: Bearer 
 ###
 DELETE http://localhost:3000/topics/28
 Content-Type: application/json
@@ -175,3 +136,70 @@ PUT http://localhost:3000/participation/exitMeeting/35/9
 
 ###
 GET http://localhost:3000/participation/allUsers/35
+
+
+###
+GET http://localhost:3000/vote/10
+Content-Type: application/json
+
+{
+    "topicId": "20"
+}
+
+###
+GET http://localhost:3000/vote/result/22
+
+###
+POST http://localhost:3000/auth-jwt/login
+Content-Type: application/json
+
+{
+    "email": "a@yahoo.com",
+    "password": "123"
+}
+
+
+###
+POST http://localhost:3000/auth-jwt/register
+Content-Type: application/json
+
+{
+    "email": "a@yahoo.com",
+    "password": "123"
+}
+
+###
+GET http://localhost:3000/auth-jwt/profile
+Authorization: Bearer 
+
+###
+POST http://localhost:3000/auth-jwt/invitation/register
+Content-Type: application/json
+Authorization: Bearer
+invitationToken: eztnw00l
+
+{
+    "email": "b@yahoo.com",
+    "password": "123"
+}
+
+###
+GET http://localhost:3000/roles/available/users
+Authorization: Bearer
+
+###
+GET http://localhost:3000/user-role/available/users
+Authorization: Bearer
+
+###
+GET http://localhost:3000/vote/detailed/5
+Authorization: Bearer
+
+###
+POST http://localhost:3000/roles/seed
+Authorization: Bearer
+
+###
+
+PUT http://localhost:3000/topics/activate/17
+Authorization: Bearer 
