@@ -24,6 +24,11 @@ export class UserRoleController {
     return this.userRoleService.getAllUsersWithSubRoles(req);
   }
 
+  @Get('/users/permissions')
+  async getAllUsersPermissions(@Req() req: any) {
+    return this.userRoleService.getAllUsersPermissions(req);
+  }
+
   @Put('/grant')
   @UserPermission([UserRolesEnum.CAN_GRANT_ROLES])
   async grantUserRole(

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ADMIN_ROLE, PRESIDENT_ROLE, SENATOR_ROLE } from 'src/core/constants';
 import { Repository } from 'typeorm';
@@ -67,7 +67,7 @@ export class UserRoleService {
     return userIds;
   }
 
-  async getRolesForUser(userId: number) {
+  async getRolesForUser(userId: number): Promise<string[]> {
     const userRoles: UserRole[] = await this.userRoleRepository.find({
       where: { user: userId },
       relations: ['role'],
@@ -132,5 +132,21 @@ export class UserRoleService {
     }
   }
 
-  //TODO: Endpoint to remove roles
+  async getAllUsersPermissions(req: any) {
+    type UserPermissions = User & { permissions: string[] };
+
+    const users: User[] = await this.getAllUsersWithSubRoles(req);
+
+    const enhancedUsers = await Promise.all(
+      users.map(async (user: UserPermissions) => {
+        const permissions: string[] = await this.getRolesForUser(user.id);
+        return {
+          ...user,
+          permissions,
+        };
+      }),
+    );
+
+    return enhancedUsers;
+  }
 }
