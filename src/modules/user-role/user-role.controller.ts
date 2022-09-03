@@ -42,4 +42,24 @@ export class UserRoleController {
   ) {
     return this.userRoleService.grantUserRoles(userId, roles);
   }
+
+  @Put('/update/permissions')
+  @UserPermission([UserRolesEnum.CAN_GRANT_ROLES])
+  async updateUserPermission(
+    @Body(
+      'userId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    userId: number,
+    @Body('permission')
+    permission: string,
+    @Body('isEnabled')
+    isEnabled: boolean,
+  ) {
+    return this.userRoleService.updateUserPermission(
+      userId,
+      permission,
+      isEnabled,
+    );
+  }
 }
