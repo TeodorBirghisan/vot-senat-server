@@ -1,3 +1,4 @@
+import { ChangePasswordUserDto } from './../user/user.dto';
 import { UserRoleService } from './../user-role/user-role.service';
 import { UserService } from './../user/user.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -75,6 +76,31 @@ export class AuthJwtService {
     return {
       forgotPasswordToken: forgotPasswordToken.invitationToken,
     };
+  }
+
+  async changePassword(
+    req: any,
+    changePasswordUserDto: ChangePasswordUserDto,
+  ): Promise<UserDto> {
+    const changePasswordToken: string = req.headers.passwordtoken;
+
+    const newPassUser: UserDto = await this.userService.changePassword(
+      req.user.id,
+      changePasswordUserDto,
+    );
+
+    const deleteionSuccessfull =
+      await this.invitationService.deleteInvitationByToken(changePasswordToken);
+
+    if (!deleteionSuccessfull) {
+      //TODO: rollback password reset
+      throw new HttpException(
+        'Error deleting deleting the invitation',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    return newPassUser;
   }
 
   private _createToken({ id, email }: UserDto): any {

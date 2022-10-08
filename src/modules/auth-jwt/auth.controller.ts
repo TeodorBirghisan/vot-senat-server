@@ -1,4 +1,4 @@
-import { toUserDto } from './../user/user.dto';
+import { ChangePasswordUserDto, toUserDto } from './../user/user.dto';
 import {
   Controller,
   Get,
@@ -16,6 +16,7 @@ import { CreateUserDto, LoginUserDto } from '../user/user.dto';
 import { AuthJwtService } from './auth-jwt.service';
 import { InvitationGuard } from '../invitation/invitation.guard';
 import { InvitationService } from '../invitation/invitation.service';
+import { ForgotPasswordGuard } from '../invitation/forgotPassword.guard';
 
 @Controller('/auth-jwt')
 export class AuthJWTController {
@@ -62,10 +63,15 @@ export class AuthJWTController {
     return await this.authService.login(loginUserDto);
   }
 
-  // @Put('change/password')
-  // public async changePassword() {
-  //   return await this.authService.changePassword();
-  // }
+  @Put('change/password')
+  @UseGuards(AuthGuard())
+  @UseGuards(ForgotPasswordGuard)
+  public async changePassword(
+    @Req() req,
+    @Body() changePasswordUserDto: ChangePasswordUserDto,
+  ): Promise<any> {
+    return await this.authService.changePassword(req, changePasswordUserDto);
+  }
 
   @UseGuards(AuthGuard())
   @Post('forgot/password')

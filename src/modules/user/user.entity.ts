@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   OneToMany,
@@ -24,12 +25,15 @@ export class User {
 
   @Column()
   email: string;
-  @BeforeInsert() async hashPassword() {
+  @BeforeInsert() async beforeInsert() {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
   @Column()
   password: string;
+  @BeforeUpdate() async beforeUpdate() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 
   @Column({ nullable: true })
   phoneNumber: string;

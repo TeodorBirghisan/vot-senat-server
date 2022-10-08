@@ -60,10 +60,10 @@ Content-Type: application/json
 
 POST http://localhost:3000/invitation/
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiYUB5YWhvby5jb20iLCJpYXQiOjE2NjUyMjUyNDksImV4cCI6MTY2NTMxMTY0OX0.rjwf1rRT58PZ5KKxQQ-zCKQfQ4HiXhHvmrIhtHjKTYo
 
 {
-    "email": "a@yahoo.com"
+    "email": "birghisanteodor@yahoo.com"
 }
 
 ###
@@ -209,4 +209,16 @@ Authorization: Bearer
 
 POST http://localhost:3000/auth-jwt/forgot/password
 Content-Type: application/json
+Authorization: Bearer 
+
+###
+
+PUT http://localhost:3000/auth-jwt/change/password
+Content-Type: application/json
 Authorization: Bearer
+passwordtoken: 
+
+{
+    "newPassword": "123",
+    "repeatedPassword": "123"
+}
