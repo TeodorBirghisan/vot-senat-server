@@ -9,6 +9,7 @@ import {
   Req,
   HttpException,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto, LoginUserDto } from '../user/user.dto';
@@ -59,6 +60,17 @@ export class AuthJWTController {
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto): Promise<any> {
     return await this.authService.login(loginUserDto);
+  }
+
+  // @Put('change/password')
+  // public async changePassword() {
+  //   return await this.authService.changePassword();
+  // }
+
+  @UseGuards(AuthGuard())
+  @Post('forgot/password')
+  public async forgotPassword(@Req() req: any) {
+    return await this.authService.forgotPassoword(req);
   }
 
   @UseGuards(AuthGuard())

@@ -6,6 +6,9 @@ import { User } from '../user/user.entity';
 import { CreateUserDto, LoginUserDto, UserDto } from '../user/user.dto';
 import { JwtPayload } from './jwt.strategy';
 import * as bcrypt from 'bcrypt';
+import { Invitation } from '../invitation/invitation.entity';
+import { InvitationService } from '../invitation/invitation.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthJwtService {
@@ -13,6 +16,8 @@ export class AuthJwtService {
     private readonly userService: UserService,
     private readonly userRoleService: UserRoleService,
     private readonly jwtService: JwtService,
+    private readonly invitationService: InvitationService,
+    private mailService: MailService,
   ) {}
 
   async register(userDto: CreateUserDto): Promise<User> {
@@ -53,6 +58,23 @@ export class AuthJwtService {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
     return user;
+  }
+
+  async forgotPassoword(req: any): Promise<any> {
+    if (!req.user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+
+    const forgotPasswordToken: Invitation =
+      await this.invitationService.createInvitation();
+    await this.mailService.sendUserConfirmation(
+      req.user.email,
+      forgotPasswordToken,
+    );
+
+    return {
+      forgotPasswordToken: forgotPasswordToken.invitationToken,
+    };
   }
 
   private _createToken({ id, email }: UserDto): any {

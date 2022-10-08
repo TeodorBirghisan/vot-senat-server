@@ -7,6 +7,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthJWTController } from './auth.controller';
 import { InvitationModule } from '../invitation/invitation.module';
 import { UserRoleModule } from '../user-role/user-role.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserRoleModule } from '../user-role/user-role.module';
     }),
     InvitationModule,
     UserRoleModule,
+    MailModule,
   ],
   controllers: [AuthJWTController],
   providers: [AuthJwtService, JwtStrategy],
