@@ -67,7 +67,7 @@ export class UserRoleService {
     return userIds;
   }
 
-  async getRolesForUser(userId: number) {
+  async getRolesForUser(userId: number): Promise<string[]> {
     const userRoles: UserRole[] = await this.userRoleRepository.find({
       where: { user: userId },
       relations: ['role'],
@@ -79,26 +79,28 @@ export class UserRoleService {
   async grantUserRoles(userId: number, roles: UserRolesEnum[]) {
     const actualRoles: Role[] = await this.roleService.getValidRoles(roles);
     const user: User = await this.userService.findOneById(userId);
-    const userRoleEntries = [];
-    actualRoles.forEach(async (role) => {
-      const existingUserRole: UserRole = await this.getOneByIds(
-        user.id,
-        role.id,
-      );
-
-      if (existingUserRole) {
-        throw new HttpException(
-          `User has already assigned the role: ${role.name}!`,
-          HttpStatus.BAD_REQUEST,
+    const userRoleEntries = await Promise.all(
+      actualRoles.map(async (role) => {
+        const existingUserRole: UserRole = await this.getOneByIds(
+          user.id,
+          role.id,
         );
-      }
 
-      const userRole: UserRole = this.userRoleRepository.create({
-        user,
-        role,
-      });
-      userRoleEntries.push(userRole);
-    });
+        if (existingUserRole) {
+          throw new HttpException(
+            `User has already assigned the role: ${role.name}!`,
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+
+        const userRole: UserRole = this.userRoleRepository.create({
+          user,
+          role,
+        });
+
+        return userRole;
+      }),
+    );
 
     await this.userRoleRepository.save(userRoleEntries);
   }
@@ -132,5 +134,57 @@ export class UserRoleService {
     }
   }
 
-  //TODO: Endpoint to remove roles
+  async getAllUsersPermissions(req: any) {
+    type UserPermissions = User & { permissions: string[] };
+
+    const users: User[] = await this.getAllUsersWithSubRoles(req);
+
+    const enhancedUsers = await Promise.all(
+      users.map(async (user: UserPermissions) => {
+        const permissions: string[] = await this.getRolesForUser(user.id);
+        return {
+          ...user,
+          permissions,
+        };
+      }),
+    );
+
+    return enhancedUsers;
+  }
+
+  async updateUserPermission(
+    userId: number,
+    permission: string,
+    isEnabled: boolean,
+  ) {
+    if (!userId || !permission) {
+      throw new HttpException('Missing Data!', HttpStatus.BAD_REQUEST);
+    }
+
+    const role: Role = await this.roleService.getIdByRoleName(permission);
+
+    if (!role) {
+      throw new HttpException('Invalid Role!', HttpStatus.BAD_REQUEST);
+    }
+
+    if (isEnabled) {
+      // create
+      await this.grantUserRoles(userId, [role.name]);
+    }
+    if (!isEnabled) {
+      // delete
+      await this.removeRoleFromUser(userId, role.id);
+    }
+  }
+
+  async removeRoleFromUser(userId: number, roleId: number) {
+    const userRoleToDelete: UserRole = await this.getOneByIds(userId, roleId);
+    const deletedUserRole: UserRole = await this.userRoleRepository.remove(
+      userRoleToDelete,
+    );
+
+    if (!deletedUserRole) {
+      throw new HttpException('Cannot delete!', HttpStatus.BAD_REQUEST);
+    }
+  }
 }

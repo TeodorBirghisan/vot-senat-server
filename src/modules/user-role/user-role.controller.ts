@@ -24,6 +24,11 @@ export class UserRoleController {
     return this.userRoleService.getAllUsersWithSubRoles(req);
   }
 
+  @Get('/users/permissions')
+  async getAllUsersPermissions(@Req() req: any) {
+    return this.userRoleService.getAllUsersPermissions(req);
+  }
+
   @Put('/grant')
   @UserPermission([UserRolesEnum.CAN_GRANT_ROLES])
   async grantUserRole(
@@ -36,5 +41,25 @@ export class UserRoleController {
     roles: UserRolesEnum[],
   ) {
     return this.userRoleService.grantUserRoles(userId, roles);
+  }
+
+  @Put('/update/permissions')
+  @UserPermission([UserRolesEnum.CAN_GRANT_ROLES])
+  async updateUserPermission(
+    @Body(
+      'userId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    userId: number,
+    @Body('permission')
+    permission: string,
+    @Body('isEnabled')
+    isEnabled: boolean,
+  ) {
+    return this.userRoleService.updateUserPermission(
+      userId,
+      permission,
+      isEnabled,
+    );
   }
 }
