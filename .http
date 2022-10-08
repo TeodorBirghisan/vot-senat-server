@@ -60,10 +60,10 @@ Content-Type: application/json
 
 POST http://localhost:3000/invitation/
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiYUB5YWhvby5jb20iLCJpYXQiOjE2NjUyMjUyNDksImV4cCI6MTY2NTMxMTY0OX0.rjwf1rRT58PZ5KKxQQ-zCKQfQ4HiXhHvmrIhtHjKTYo
 
 {
-    "email": "a@yahoo.com"
+    "email": "birghisanteodor@yahoo.com"
 }
 
 ###
@@ -205,12 +205,35 @@ Authorization: Bearer
 PUT http://localhost:3000/topics/activate/17
 Authorization: Bearer 
 
+
+###
+
+POST http://localhost:3000/auth-jwt/forgot/password
+Content-Type: application/json
+Authorization: Bearer 
+
+
+###
+
+PUT http://localhost:3000/auth-jwt/change/password
+Content-Type: application/json
+Authorization: Bearer
+passwordtoken: 
+
+{
+    "newPassword": "123",
+    "repeatedPassword": "123"
+}
+
+
 ###
 
 GET http://localhost:3000/user-role/users/permissions
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRAYWRtaW4uY29tIiwiaWF0IjoxNjYyMTk3NDEyLCJleHAiOjE2NjIyODM4MTJ9.ZzDhTRCXlzNAnskjToH3K4lIn8_2u1Ykbay4gdg1oPE
 
+
 ###
+
 PUT http://localhost:3000/user-role/update/permissions
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRAYWRtaW4uY29tIiwiaWF0IjoxNjYyMTk3NDEyLCJleHAiOjE2NjIyODM4MTJ9.ZzDhTRCXlzNAnskjToH3K4lIn8_2u1Ykbay4gdg1oPE

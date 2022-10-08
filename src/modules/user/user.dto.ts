@@ -8,6 +8,11 @@ export class CreateUserDto {
   @IsNotEmpty() @IsEmail() email: string;
 }
 
+export class ChangePasswordUserDto {
+  @IsNotEmpty() newPassword: string;
+  @IsNotEmpty() repeatedPassword: string;
+}
+
 export class UserDto {
   @IsNotEmpty() id: number;
   @IsNotEmpty() @IsEmail() email: string;

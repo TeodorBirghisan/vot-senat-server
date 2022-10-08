@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailModule } from '../mail/mail.module';
 import { SecurityModule } from '../security/security.module';
 import { UserRoleModule } from '../user-role/user-role.module';
+import { ForgotPasswordGuard } from './forgotPassword.guard';
 import { InvitationController } from './invitation.controller';
 import { Invitation } from './invitation.entity';
 import { InvitationGuard } from './invitation.guard';
@@ -19,8 +20,8 @@ import { InvitationService } from './invitation.service';
       defaultStrategy: 'jwt',
     }),
   ],
-  providers: [InvitationService, InvitationGuard],
+  providers: [InvitationService, InvitationGuard, ForgotPasswordGuard],
   controllers: [InvitationController],
-  exports: [InvitationGuard, InvitationService],
+  exports: [InvitationGuard, InvitationService, ForgotPasswordGuard],
 })
 export class InvitationModule {}
