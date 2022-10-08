@@ -107,6 +107,7 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/topics/35
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRAYWRtaW4uY29tIiwiaWF0IjoxNjYyMTk3NDEyLCJleHAiOjE2NjIyODM4MTJ9.ZzDhTRCXlzNAnskjToH3K4lIn8_2u1Ykbay4gdg1oPE
 
 ###
 POST http://localhost:3000/vote/22/11
@@ -154,8 +155,8 @@ POST http://localhost:3000/auth-jwt/login
 Content-Type: application/json
 
 {
-    "email": "a@yahoo.com",
-    "password": "123"
+    "email": "ad@admin.com",
+    "password": "1"
 }
 
 
@@ -164,8 +165,8 @@ POST http://localhost:3000/auth-jwt/register
 Content-Type: application/json
 
 {
-    "email": "a@yahoo.com",
-    "password": "123"
+    "email": "ad@admin.com",
+    "password": "1"
 }
 
 ###
@@ -192,8 +193,8 @@ GET http://localhost:3000/user-role/available/users
 Authorization: Bearer
 
 ###
-GET http://localhost:3000/vote/detailed/5
-Authorization: Bearer
+GET http://localhost:3000/vote/detailed/22
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRAYWRtaW4uY29tIiwiaWF0IjoxNjYyMTk3NDEyLCJleHAiOjE2NjIyODM4MTJ9.ZzDhTRCXlzNAnskjToH3K4lIn8_2u1Ykbay4gdg1oPE
 
 ###
 POST http://localhost:3000/roles/seed
@@ -203,3 +204,19 @@ Authorization: Bearer
 
 PUT http://localhost:3000/topics/activate/17
 Authorization: Bearer 
+
+###
+
+GET http://localhost:3000/user-role/users/permissions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRAYWRtaW4uY29tIiwiaWF0IjoxNjYyMTk3NDEyLCJleHAiOjE2NjIyODM4MTJ9.ZzDhTRCXlzNAnskjToH3K4lIn8_2u1Ykbay4gdg1oPE
+
+###
+PUT http://localhost:3000/user-role/update/permissions
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRAYWRtaW4uY29tIiwiaWF0IjoxNjYyMTk3NDEyLCJleHAiOjE2NjIyODM4MTJ9.ZzDhTRCXlzNAnskjToH3K4lIn8_2u1Ykbay4gdg1oPE
+
+{
+    "userId": 13,
+    "permission": "CAN_CREATE_MEETINGS",
+    "isEnabled": true
+}
