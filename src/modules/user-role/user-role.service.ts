@@ -134,6 +134,10 @@ export class UserRoleService {
     }
   }
 
+  async getPermissionsForUser(userId: number): Promise<string[]> {
+    return await this.getRolesForUser(userId);
+  }
+
   async getAllUsersPermissions(req: any) {
     type UserPermissions = User & { permissions: string[] };
 

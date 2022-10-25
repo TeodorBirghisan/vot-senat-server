@@ -44,11 +44,13 @@ export class AuthJwtService {
 
     const token = this._createToken(user);
 
-    const userRole = await this.userRoleService.returnUserRole(user.id);
+    const userPermissions = await this.userRoleService.getPermissionsForUser(
+      user.id,
+    );
 
     return {
       userId: user.id,
-      role: userRole,
+      permissions: userPermissions,
       ...token,
     };
   }
