@@ -14,23 +14,27 @@ import { UserPermissionGuard } from '../permission/user-permission.guard';
 import { UserRolesEnum } from '../role/role.entity';
 import { UserRoleService } from './user-role.service';
 
-@Controller('/user-role')
+@Controller('/user-permissions')
 @UseGuards(AuthGuard(), UserPermissionGuard)
 export class UserRoleController {
   constructor(private userRoleService: UserRoleService) {}
 
-  @Get('/available/users')
-  async getAllUsersWithSubRoles(@Req() req: any) {
-    return this.userRoleService.getAllUsersWithSubRoles(req);
-  }
-
-  @Get('/users/permissions')
+  @Get()
+  @UserPermission(
+    [UserRolesEnum.CAN_GRANT_PERMISSIONS_PRESIDENT] || [
+        UserRolesEnum.CAN_GRANT_PERMISSIONS_ALL,
+      ] || [UserRolesEnum.CAN_GRANT_PERMISSIONS_VICEPRESIDENT],
+  )
   async getAllUsersPermissions(@Req() req: any) {
     return this.userRoleService.getAllUsersPermissions(req);
   }
 
   @Put('/grant')
-  @UserPermission([UserRolesEnum.CAN_GRANT_ROLES])
+  @UserPermission(
+    [UserRolesEnum.CAN_GRANT_PERMISSIONS_PRESIDENT] || [
+        UserRolesEnum.CAN_GRANT_PERMISSIONS_ALL,
+      ] || [UserRolesEnum.CAN_GRANT_PERMISSIONS_VICEPRESIDENT],
+  )
   async grantUserRole(
     @Body(
       'userId',
@@ -44,7 +48,11 @@ export class UserRoleController {
   }
 
   @Put('/update/permissions')
-  @UserPermission([UserRolesEnum.CAN_GRANT_ROLES])
+  @UserPermission(
+    [UserRolesEnum.CAN_GRANT_PERMISSIONS_PRESIDENT] || [
+        UserRolesEnum.CAN_GRANT_PERMISSIONS_ALL,
+      ] || [UserRolesEnum.CAN_GRANT_PERMISSIONS_VICEPRESIDENT],
+  )
   async updateUserPermission(
     @Body(
       'userId',

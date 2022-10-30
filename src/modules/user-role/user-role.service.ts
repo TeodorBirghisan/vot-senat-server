@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ADMIN_ROLE, PRESIDENT_ROLE, SENATOR_ROLE } from 'src/core/constants';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Role, UserRolesEnum } from '../role/role.entity';
 import { RoleService } from '../role/role.service';
 import { User } from '../user/user.entity';
@@ -31,30 +30,66 @@ export class UserRoleService {
     const userId: number = req.user.id;
     const roles: string[] = await this.getRolesForUser(userId);
 
-    const isAdmin: boolean = roles.includes(UserRolesEnum.CAN_GRANT_PRESIDENT);
+    const isAdmin: boolean = roles.includes(
+      UserRolesEnum.CAN_GRANT_PERMISSIONS_ALL,
+    );
+
     const isPresident: boolean =
-      roles.includes(UserRolesEnum.CAN_GRANT_VICE_PRESIDENT) && !isAdmin;
+      roles.includes(UserRolesEnum.CAN_GRANT_PERMISSIONS_PRESIDENT) && !isAdmin;
+
+    const isVicePresident: boolean =
+      roles.includes(UserRolesEnum.CAN_GRANT_PERMISSIONS_VICEPRESIDENT) &&
+      !isAdmin &&
+      !isPresident;
 
     const users: User[] = await this.userService.findAll();
 
     if (isAdmin) {
-      // is admin and get ALL users
+      // is admin => get all users
       return users;
     } else if (isPresident) {
-      // is president and get ALL users that do not have CAN_GRANT_PRESIDENT;
-      const presidentUsersId: number[] =
-        await this.getUserIdsWithPresidentRole();
-      return users.filter((user) => !presidentUsersId.includes(user.id));
-    } else {
-      // is vice-presindent
+      // is president => get all vicepresidents and senators;
+      const presidentOrAboveUsers: number[] =
+        await this.getUserIdsWithPermissions([
+          UserRolesEnum.CAN_GRANT_PERMISSIONS_PRESIDENT,
+          UserRolesEnum.CAN_GRANT_PERMISSIONS_ALL,
+        ]);
+      return users.filter((user) => !presidentOrAboveUsers.includes(user.id));
+    } else if (isVicePresident) {
+      // is vice-presindent => get all senators
+      const vicepresidentOrAboveUsers: number[] =
+        await this.getUserIdsWithPermissions([
+          UserRolesEnum.CAN_GRANT_PERMISSIONS_PRESIDENT,
+          UserRolesEnum.CAN_GRANT_PERMISSIONS_ALL,
+          UserRolesEnum.CAN_GRANT_PERMISSIONS_VICEPRESIDENT,
+        ]);
+      return users.filter(
+        (user) => !vicepresidentOrAboveUsers.includes(user.id),
+      );
     }
   }
 
-  async getUserIdsWithPresidentRole() {
-    // Get all userIds that have CAN_GRANT_PRESIDENT role
+  async getUserIdsWithPermissions(permissions: string[]): Promise<number[]> {
+    const userPermissionsIds: number[] =
+      await this.roleService.getIdsByPermissionsName(permissions);
+
+    const userRoles: UserRole[] = await this.userRoleRepository.find({
+      where: { role: In(userPermissionsIds) },
+      relations: ['user'],
+    });
+
+    const userIds: number[] = userRoles
+      .map(({ user }) => user.id)
+      .filter((elem, index, self) => index === self.indexOf(elem));
+
+    return userIds;
+  }
+
+  async getUserIdsWithPermission(permission: string): Promise<number[]> {
     const presidentRole: Role = await this.roleService.getIdByRoleName(
-      UserRolesEnum.CAN_GRANT_PRESIDENT,
+      permission,
     );
+
     const userRoles: UserRole[] = await this.userRoleRepository.find({
       where: { role: presidentRole.id },
       relations: ['user'],
@@ -118,22 +153,6 @@ export class UserRoleService {
     return hasPermission;
   }
 
-  async returnUserRole(userId: number): Promise<string> {
-    const roles: string[] = await this.getRolesForUser(userId);
-
-    const isAdmin: boolean = roles.includes(UserRolesEnum.CAN_GRANT_PRESIDENT);
-    const isPresident: boolean =
-      roles.includes(UserRolesEnum.CAN_GRANT_VICE_PRESIDENT) && !isAdmin;
-
-    if (isAdmin) {
-      return ADMIN_ROLE;
-    } else if (isPresident) {
-      return PRESIDENT_ROLE;
-    } else {
-      return SENATOR_ROLE;
-    }
-  }
-
   async getPermissionsForUser(userId: number): Promise<string[]> {
     return await this.getRolesForUser(userId);
   }
@@ -141,15 +160,19 @@ export class UserRoleService {
   async getAllUsersPermissions(req: any) {
     type UserPermissions = User & { permissions: string[] };
 
+    const currentUserId: number = req.user.id;
+
     const users: User[] = await this.getAllUsersWithSubRoles(req);
 
     const enhancedUsers = await Promise.all(
       users.map(async (user: UserPermissions) => {
-        const permissions: string[] = await this.getRolesForUser(user.id);
-        return {
-          ...user,
-          permissions,
-        };
+        if (user.id !== currentUserId) {
+          const permissions: string[] = await this.getRolesForUser(user.id);
+          return {
+            ...user,
+            permissions,
+          };
+        }
       }),
     );
 

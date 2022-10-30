@@ -28,13 +28,13 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/user-role/grant
+PUT http://localhost:3000/user-permissions/grant
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhQHlhaG9vLmNvbSIsImlhdCI6MTY0ODAzODcxOCwiZXhwIjoxNjQ4MTI1MTE4fQ.i9gQBEEMGynk1aVRLa16q3v-MPgWmsDA9AsIi1sbNvg
+Authorization: Bearer 
 
 {
-    "userId": 3,
-    "roles": ["CAN_CREATE_MEETINGS"]
+    "userId": 14,
+    "roles": ["CAN_GRANT_PERMISSIONS_ALL"]
 }
 
 ###
@@ -171,7 +171,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/auth-jwt/profile
-Authorization: Bearer 
+Authorization: Bearer
 
 ###
 POST http://localhost:3000/auth-jwt/invitation/register
@@ -210,7 +210,10 @@ Authorization: Bearer
 
 POST http://localhost:3000/auth-jwt/forgot/password
 Content-Type: application/json
-Authorization: Bearer 
+
+{
+    "email": "birghisanteodor@yahoo.com"
+}
 
 
 ###
@@ -228,8 +231,8 @@ passwordtoken:
 
 ###
 
-GET http://localhost:3000/user-role/users/permissions
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRAYWRtaW4uY29tIiwiaWF0IjoxNjYyMTk3NDEyLCJleHAiOjE2NjIyODM4MTJ9.ZzDhTRCXlzNAnskjToH3K4lIn8_2u1Ykbay4gdg1oPE
+GET http://localhost:3000/user-permissions
+Authorization: Bearer 
 
 
 ###
