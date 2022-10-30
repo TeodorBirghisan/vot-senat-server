@@ -9,6 +9,7 @@ import { VoteService } from './vote.service';
 import { VoteController } from './vote.controller';
 import { Vote } from './vote.entity';
 import { PassportModule } from '@nestjs/passport';
+import { UserRoleModule } from '../user-role/user-role.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PassportModule } from '@nestjs/passport';
     UserModule,
     TopicModule,
     MeetingModule,
+    UserRoleModule,
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
