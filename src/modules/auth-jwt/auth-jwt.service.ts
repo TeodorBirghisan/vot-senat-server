@@ -63,17 +63,10 @@ export class AuthJwtService {
     return user;
   }
 
-  async forgotPassoword(req: any): Promise<any> {
-    if (!req.user) {
-      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
-    }
-
+  async forgotPassoword(email: string): Promise<any> {
     const forgotPasswordToken: Invitation =
       await this.invitationService.createInvitation();
-    await this.mailService.sendUserConfirmation(
-      req.user.email,
-      forgotPasswordToken,
-    );
+    await this.mailService.sendForgotPasswordToken(email, forgotPasswordToken);
 
     return {
       forgotPasswordToken: forgotPasswordToken.invitationToken,

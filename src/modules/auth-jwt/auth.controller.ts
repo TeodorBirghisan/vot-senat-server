@@ -73,10 +73,9 @@ export class AuthJWTController {
     return await this.authService.changePassword(req, changePasswordUserDto);
   }
 
-  @UseGuards(AuthGuard())
   @Post('forgot/password')
-  public async forgotPassword(@Req() req: any) {
-    return await this.authService.forgotPassoword(req);
+  public async forgotPassword(@Body('email') email: string) {
+    return await this.authService.forgotPassoword(email);
   }
 
   @UseGuards(AuthGuard())
