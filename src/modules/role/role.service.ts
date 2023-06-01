@@ -50,7 +50,7 @@ export class RoleService {
       where: { name: role },
     });
 
-    if (!role) {
+    if (!validRole) {
       throw new HttpException(
         'Cannot find specified role!',
         HttpStatus.BAD_REQUEST,
@@ -58,6 +58,24 @@ export class RoleService {
     }
 
     return validRole;
+  }
+
+  async getIdsByPermissionsName(permissions: string[]): Promise<number[]> {
+    const validPermissions: number[] = await Promise.all(
+      permissions.map(async (role) => {
+        const currentRole: Role = await this.getIdByRoleName(role);
+        return currentRole.id;
+      }),
+    );
+
+    if (!validPermissions) {
+      throw new HttpException(
+        'Cannot find specified role!',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return validPermissions;
   }
 
   async getValidRoles(roles: UserRolesEnum[]): Promise<Role[]> {

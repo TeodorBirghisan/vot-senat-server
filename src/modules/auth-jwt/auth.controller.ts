@@ -1,4 +1,4 @@
-import { toUserDto } from './../user/user.dto';
+import { ChangePasswordUserDto, toUserDto } from './../user/user.dto';
 import {
   Controller,
   Get,
@@ -9,12 +9,14 @@ import {
   Req,
   HttpException,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto, LoginUserDto } from '../user/user.dto';
 import { AuthJwtService } from './auth-jwt.service';
 import { InvitationGuard } from '../invitation/invitation.guard';
 import { InvitationService } from '../invitation/invitation.service';
+import { ForgotPasswordGuard } from '../invitation/forgotPassword.guard';
 
 @Controller('/auth-jwt')
 export class AuthJWTController {
@@ -59,6 +61,21 @@ export class AuthJWTController {
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto): Promise<any> {
     return await this.authService.login(loginUserDto);
+  }
+
+  @Put('change/password')
+  @UseGuards(AuthGuard())
+  @UseGuards(ForgotPasswordGuard)
+  public async changePassword(
+    @Req() req,
+    @Body() changePasswordUserDto: ChangePasswordUserDto,
+  ): Promise<any> {
+    return await this.authService.changePassword(req, changePasswordUserDto);
+  }
+
+  @Post('forgot/password')
+  public async forgotPassword(@Body('email') email: string) {
+    return await this.authService.forgotPassoword(email);
   }
 
   @UseGuards(AuthGuard())

@@ -35,7 +35,7 @@ export class MeetingsController {
   }
 
   @Post()
-  @UserPermission([UserRolesEnum.CAN_CREATE_MEETINGS])
+  @UserPermission([UserRolesEnum.CAN_CREATE_MEETING])
   createMeeting(
     @Body() meeting: MeetingDTO,
     @Req() req: any,
@@ -44,7 +44,7 @@ export class MeetingsController {
   }
 
   @Delete('/:meetingId')
-  @UserPermission([UserRolesEnum.CAN_DELETE_MEETINGS])
+  @UserPermission([UserRolesEnum.CAN_DELETE_MEETING])
   deleteMeeting(
     @Param(
       'meetingId',

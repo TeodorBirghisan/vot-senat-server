@@ -1,3 +1,4 @@
+import { UserPermissionGuard } from './../permission/user-permission.guard';
 import {
   Body,
   Controller,
@@ -12,13 +13,16 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Vote } from './vote.entity';
 import { VoteService } from './vote.service';
+import { UserPermission } from '../permission/user-permission.decorator';
+import { UserRolesEnum } from '../role/role.entity';
 
 @Controller('/vote')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard(), UserPermissionGuard)
 export class VoteController {
   constructor(private voteService: VoteService) {}
 
   @Post('/:topicId')
+  @UserPermission([UserRolesEnum.CAN_VOTE])
   vote(
     @Param('topicId') topicId: number,
     @Body('voteValue') voteValue: string,

@@ -16,4 +16,15 @@ export class MailService {
       },
     });
   }
+
+  async sendForgotPasswordToken(email: string, token: Invitation) {
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Forgot Password Token',
+      template: 'forgotPassword',
+      context: {
+        forgotPasswordToken: token.invitationToken,
+      },
+    });
+  }
 }
